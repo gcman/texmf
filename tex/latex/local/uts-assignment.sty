@@ -1,0 +1,141 @@
+\ProvidesPackage{uts-assignment}
+
+\newcommand{\authorfirstname}{Gautam}
+\newcommand{\authorlastname}{Manohar}
+\newcommand{\titlename}{Title}
+\newcommand{\subtitlename}{Subtitle}
+\newcommand{\shorttitlename}{Short Title}
+\newcommand{\teachername}{Teacher}
+\newcommand{\coursename}{Course}
+\newcommand{\datename}{Date}
+
+\newcommand{\authorfirst}[1]{\renewcommand{\authorfirstname}{#1}}
+\newcommand{\authorlast}[1]{\renewcommand{\authorlastname}{#1}}
+\renewcommand{\title}[1]{\renewcommand{\titlename}{#1}}
+\newcommand{\subtitle}[1]{\renewcommand{\subtitlename}{#1}}
+\newcommand{\shorttitle}[1]{\renewcommand{\shorttitlename}{#1}}
+\newcommand{\teacher}[1]{\renewcommand{\teachername}{#1}}
+\newcommand{\course}[1]{\renewcommand{\coursename}{#1}}
+\renewcommand{\date}[1]{\renewcommand{\datename}{#1}}
+
+\usepackage{mathtools} % Loads AMS Math Package
+\usepackage{amsthm} % Theorem Formatting
+\usepackage{amssymb}    % Math symbols such as \mathbb
+\usepackage{amsfonts}
+\usepackage{graphicx} % Allows for eps images
+
+\usepackage{tkz-euclide}
+\usetkzobj{all}
+
+\usepackage{tensor}
+ % Sets margins and page size
+\usepackage{ifthen}
+\usepackage{varioref}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\usepackage{enumitem}
+\usepackage[separate-uncertainty = true,multi-part-units=single]{siunitx}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{parskip}
+\usepackage{ragged2e}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{etoolbox}
+\usepackage{csquotes}
+\usepackage[version=4]{mhchem}
+\usepackage{chemfig}
+\usepackage{yhmath}
+\usepackage{pgfplots}
+\usepackage{pdflscape}
+\pgfplotsset{compat=newest}
+\usepackage[format=hang,labelsep=period]{caption}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\renewcommand{\theenumi}{(\alph{enumi})}
+
+\usepackage{titlesec}
+\usepackage[american]{babel}
+
+\usepackage{xparse}
+%
+\DeclarePairedDelimiterX{\set}[1]{\{}{\}}{\setargs{#1}}
+\NewDocumentCommand{\setargs}{>{\SplitArgument{1}{;}}m}
+{\setargsaux#1}
+\NewDocumentCommand{\setargsaux}{mm}
+{\IfNoValueTF{#2}{#1} {#1\,\delimsize|\,\mathopen{}#2}}%{#1\:;\:#2}
+
+\newboolean{compact}
+
+\DeclareOption{noqed}{\renewcommand{\qedsymbol}{}}
+\DeclareOption{compact}{%
+	\setboolean{compact}{true}
+	}
+\ProcessOptions\relax
+
+
+\makeatletter
+	\ifnum\f@size=12
+		\setboolean{compact}{true}
+	\fi
+\makeatother
+
+\ifthenelse{\boolean{compact}}{%
+	\usepackage[margin=1.25in, top=1in]{geometry}
+}
+
+\renewcommand{\labelenumi}{(\alph{enumi})} % Use letters for enumerate
+% \DeclareMathOperator{\Sample}{Sample}
+\let\vaccent=\v % rename builtin command \v{} to \vaccent{}
+\let\Pr\relax
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclareMathOperator\LCM{LCM}
+\DeclareMathOperator\Pr{P}
+\DeclareMathOperator\arccot{arccot}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+
+\setcounter{secnumdepth}{3}
+
+\setcounter{section}{0}% Not using chapters, but they're used in the counters
+
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{axiom}{Axiom}[section]
+\newtheorem{p}{Problem}[section]
+\renewcommand{\thep}{\arabic{p}}
+\usepackage{cancel}
+\newtheorem{lem}{Lemma}
+\theoremstyle{definition}
+\newtheorem*{dfn}{Definition}
+\newenvironment{s}
+	{\begin{proof}[\textnormal{\textbf{Solution.}}]}
+	{\end{proof}}
+
+ \AtBeginDocument{
+ 	{\noindent\Huge\bf\titlename}\\[1\baselineskip] % Title
+ 	{\bf\coursename}\\
+	{{\emph{\datename}}}\hfill{\large \textsc{\MakeLowercase{\authorfirstname}}~\textsc{\MakeLowercase{\authorlastname}}} % Author name
+ }
+
+\newcommand{\inn}[1]{\in\left\{#1\right\}}
+\newcommand{\ninn}[1]{\not\in\left\{#1\right\}}
+\newcommand{\orr}{\qquad&\,\text{or}\qquad}
+
+\renewcommand*\d{\mathop{}\!\mathrm{d}}
+
+\renewcommand{\v}{\leavevmode\vspace{-1ex}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\liq}{\text{($\mathrm{\ell}$)}}
+\newcommand{\g}{\text{(g)}}
+\newcommand{\aq}{\text{(aq)}}
+
+\endinput

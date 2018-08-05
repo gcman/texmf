@@ -1,0 +1,131 @@
+\ProvidesPackage{uts-mla}
+
+\newcommand{\authorfirstname}{Gautam}
+\newcommand{\authorlastname}{Manohar}
+\newcommand{\titlename}{Title}
+\newcommand{\subtitlename}{Subtitle}
+\newcommand{\shorttitlename}{Short Title}
+\newcommand{\teachername}{Teacher}
+\newcommand{\coursename}{Course}
+\newcommand{\datename}{Date}
+
+\newcommand{\authorfirst}[1]{\renewcommand{\authorfirstname}{#1}}
+\newcommand{\authorlast}[1]{\renewcommand{\authorlastname}{#1}}
+\renewcommand{\title}[1]{\renewcommand{\titlename}{#1}}
+\newcommand{\subtitle}[1]{\renewcommand{\subtitlename}{#1}}
+\newcommand{\shorttilte}[1]{\renewcommand{\shorttitlename}{#1}}
+\newcommand{\teacher}[1]{\renewcommand{\teachername}{#1}}
+\newcommand{\course}[1]{\renewcommand{\coursename}{#1}}
+\renewcommand{\date}[1]{\renewcommand{\datename}{#1}}
+
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[
+	threshold=4
+	,thresholdtype=lines
+	]{csquotes}
+\usepackage[leftmargin=1in,rightmargin=0in]{quoting}
+\usepackage{indentfirst}
+\usepackage{ragged2e}
+\usepackage[hidelinks]{hyperref}
+\setlength{\RaggedRightParindent}{\parindent}
+\usepackage{setspace}
+\doublespacing
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage{ellipsis}
+\usepackage{footmisc}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage[style=mla,backend=biber]{biblatex}
+\addbibresource{uts-gautam.bib}
+\let\cite\parencite
+
+%\usepackage{fontspec}
+%\setmainfont[Ligatures={Required,Common,Contextual,TeX}]{TeX Gyre Schola}
+
+\usepackage{microtype}
+
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0em}
+\setlength{\headheight}{25pt}
+\setlength{\topmargin}{-0.55in}
+\setlength{\voffset}{0in}
+\rhead{\authorlastname~\thepage}
+
+\let\printbibliographyold\printbibliography
+
+\renewcommand{\printbibliography}{
+	\titleformat{name=\section,numberless}
+	{\normalfont\centering}{}{0em}{}
+	\newpage
+	\printbibliographyold
+	}
+
+\AtBeginDocument{
+	\RaggedRight
+	\noindent \authorfirstname~\authorlastname \\
+	\noindent \teachername \\
+	\noindent \coursename \\
+	\noindent \datename \\
+	{\centering \titlename\par}
+	\RaggedRight
+}
+
+\makeatletter
+
+\DeclareCiteCommand{\textcite}
+{\iffootnote{\usebibmacro{cite:init}}{}%
+	\usebibmacro{prenote}}%
+{\usebibmacro{citeindex}%
+	\iffootnote
+	{\global\booltrue{cbx@mlafootnotes}%
+		\renewcommand*{\newunitpunct}{\addcomma\space}%
+		\usebibmacro{cite:mla:foot}}
+	{\usebibmacro{cite:mla}}}
+{}
+{\usebibmacro{mla:foot:postnote}}
+
+\makeatother
+
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\thesection\arabic{subsection}}
+
+\titleformat{\section}
+{\normalfont}{\thesection}{1em}{}
+\titleformat{\subsection}
+{\normalfont}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+{\normalfont}{\thesubsubsection}{1em}{}
+
+\titleformat{name=\section,numberless}
+{\normalfont\bfseries}{}{0em}{}
+\titleformat{name=\subsection,numberless}
+{\normalfont\itshape}{}{0em}{}
+\titleformat{name=\subsubsection,numberless}
+{\normalfont\bfseries\centering}{}{0em}{}
+
+\newcommand{\proseindent}{0.25in}
+\newcommand{\poetryindent}{0in}
+
+\newcommand{\acite}[1]{(#1)}
+
+\newenvironment{mlablockquote}[1][\proseindent]{\setlength{\parindent}{#1}\begin{quoting}}{\end{quoting}}
+
+\SetBlockEnvironment{quoting}
+\SetCiteCommand{\autocite}
+\DeclareAutoPunct{.,}
+\renewcommand{\mkcitation}[1]{ (#1)}
+\renewcommand{\mktextquote}[6]{#1#2#3#6#4#5}
+
+\def\citepages{\@ifnextchar[{\@with}{\@without}}
+\def\@with[#1]#2{(#1--#2)}
+\def\@without#1{(#1)}
+
+\setlength{\parindent}{0.5in}
+\RaggedRight
