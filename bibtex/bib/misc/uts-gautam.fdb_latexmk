@@ -1,0 +1,13 @@
+# Fdb version 3
+["xdvipdfmx"] 0 "uts-gautam.xdv" "uts-gautam.pdf" "uts-gautam" 0
+  "uts-gautam.xdv" 0 -1 0 "xelatex"
+  (generated)
+  "uts-gautam.pdf"
+["xelatex"] 1520570714 "C:\Users\Manohar\texmf\bibtex\bib\misc\uts-gautam.bib" "uts-gautam.xdv" "uts-gautam" 1520570714
+  "C:/Users/Manohar/AppData/Local/MiKTeX/2.9/miktex/data/le/xetex/xelatex.fmt" 1516491334 15561550 e9285b399ada24060b89060f4265c902 ""
+  "C:\Users\Manohar\texmf\bibtex\bib\misc\uts-gautam.bib" 1520570713 23915 890d48420d092e806787196a4a4f40d6 ""
+  "uts-gautam.aux" 1520214158 9 a94a2480d3289e625eea47cd1b285758 ""
+  "uts-gautam.bib" 1520570713 23915 890d48420d092e806787196a4a4f40d6 ""
+  (generated)
+  "uts-gautam.log"
+  "uts-gautam.xdv"

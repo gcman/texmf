@@ -1,0 +1,4 @@
+PWD C:/Users/Manohar/texmf/bibtex/bib/misc
+INPUT C:/Users/Manohar/AppData/Local/MiKTeX/2.9/miktex/data/le/xetex/xelatex.fmt
+INPUT C:/Users/Manohar/texmf/bibtex/bib/misc/uts-gautam.bib
+OUTPUT uts-gautam.log
