@@ -33,17 +33,16 @@
 
 % converts LaTeX specials (quotes, dashes etc.) to Unicode
 \defaultfontfeatures{Mapping=tex-text}
-\setromanfont [Ligatures={Common}, Numbers={OldStyle}]{Minion Pro}
+\setromanfont [Ligatures={Common}, Numbers={OldStyle}]{TeX Gyre Pagella}
 \setsansfont[Scale=0.9]{Bodoni MT}
-\setmonofont[Scale=0.8]{Courier}
 
 % Set paragraph break
 \setlength{\parskip}{1em}
 
 % Custom ampersand
-\newcommand{\amper}{{\fontspec[Scale=.95]{Minion Pro}\selectfont\itshape\&}}
+\newcommand{\amper}{{\fontspec[Scale=.95]{TeX Gyre Pagella}\selectfont\itshape\&}}
 
-	\setmainfont{Minion Pro}
+	\setmainfont{TeX Gyre Pagella}
 	\setsansfont{Bodoni MT}
 
 % Command required by how Pandoc handles the list conversion
@@ -80,6 +79,7 @@
 \DeclareStringOption [City]{city}
 \DeclareStringOption [Province]{province}
 \DeclareStringOption [Postal Code]{postalcode}
+\DeclareStringOption [Date]{date}
 \ProcessKeyvalOptions{uts}
 
 % To display custom date in the example
@@ -105,7 +105,7 @@
 
   \rmfamily
   \begin{flushright}
-	\uts@citysender, March~2018
+	\uts@date
   \end{flushright}
 
   \vspace{1em}
@@ -120,4 +120,3 @@
 		\uts@author
 	\end{FlushRight}
 }
-
