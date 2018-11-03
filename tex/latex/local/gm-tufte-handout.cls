@@ -4,6 +4,9 @@
 \newcommand{\@tufte@class}{article}
 \newcommand{\@tufte@pkgname}{tufte-handout}
 
+\RequirePackage{datetime}
+\newdateformat{gmdate}{\THEDAY \monthname{\THEMONTH} \THEYEAR}
+
 \RequirePackage{xkeyval}
 \RequirePackage{xifthen}
 \RequirePackage{hardwrap}
@@ -73,7 +76,6 @@
 \DeclareOptionX[tufte]<common>{bidi}{\setboolean{@tufte@loadbidi}{true}}
 \DeclareOptionX[tufte]<common>{nobidi}{\setboolean{@tufte@loadbidi}{false}}
 
-
 % `nohyper' option -- suppresses loading of the hyperref package
 
 \newboolean{@tufte@loadhyper}
@@ -81,6 +83,14 @@
 \DeclareOptionX[tufte]<common>{hyper}{\setboolean{@tufte@loadhyper}{true}}
 \DeclareOptionX[tufte]<common>{nohyper}{\setboolean{@tufte@loadhyper}{false}}
 
+% 'pset' option: removes side margins
+\newboolean{@tufte@nomargin}
+\DeclareOptionX[tufte]<common>{nomargin}{\setboolean{@tufte@nomargin}{true}}
+\DeclareOptionX[tufte]<common>{pset}{
+  \ExecuteOptionsX[tufte]<common>{nomargin}
+  \ExecuteOptionsX[tufte]<common>{notoc}
+  \ExecuteOptionsX[tufte]<common>{nobib}
+}
 
 % `sidenote', `marginnote', `caption', `citation', `marginals' options
 % Each allows one of {justified,raggedleft,raggedright,raggedouter,auto}.
@@ -236,25 +246,15 @@
 
 %
 %% Loads the hyperref package and sets some default options.
-
-\newcommand{\TufteLoadHyperref}{%
-  \RequirePackage[unicode,hyperfootnotes=false]{hyperref}
-  \hypersetup{%
-    pdfborder = {0 0 0},
-    bookmarksdepth = section,
-    citecolor = DarkGreen,
-    linkcolor = DarkBlue,
-    urlcolor = DarkGreen,
-  }%
-}
-
-%
-%% Load the `hyperref' package.
-\ifthenelse{\boolean{@tufte@loadhyper}}{%
-  \TufteLoadHyperref%
-}{% hyperfootnotes override our modifications to the \footnote* and \@footnote* commands.
-  \PassOptionsToPackage{hyperfootnotes=false}{hyperref}
-}
+\RequirePackage[unicode,hyperfootnotes=false]{hyperref}
+\hypersetup{%
+  pdfborder = {0 0 0},
+  colorlinks = true,
+  bookmarksdepth = subsection,
+  citecolor = DarkGreen,
+  linkcolor = Maroon,
+  urlcolor = DarkBlue,
+}%
 
 % Set the font sizes and baselines to match Tufte's books
 \renewcommand\normalsize{%
@@ -336,6 +336,10 @@
 % Set page layout geometry
 
 \RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,textheight=44\baselineskip,headheight=\baselineskip]{geometry}
+
+\ifthenelse{\boolean{@tufte@nomargin}}
+  {\geometry{textwidth=40pc,marginparsep=0pc,marginparwidth=0pc}}
+  {}
 
 \ifthenelse{\boolean{@tufte@afourpaper}}
   {\geometry{a4paper,left=24.8mm,top=27.4mm,headsep=2\baselineskip,textwidth=107mm,marginparsep=8.2mm,marginparwidth=49.4mm,textheight=49\baselineskip,headheight=\baselineskip}}
@@ -453,7 +457,7 @@
 \newcommand{\thanklesspublisher}{}% full publisher minus \thanks{}
 
 \newcommand{\@publisher}{}% full publisher with \thanks{}
-\newcommand{\thedate}{\today}
+\newcommand{\thedate}{\gmdate\today}
 
 % TODO Fix it so that \thanks is not spaced out (with `soul') and can be
 % used in \maketitle when the `sfsidenotes' option is provided.
@@ -491,14 +495,13 @@
 }
 
 \renewcommand{\date}[1]{%
-  \gdef\@date{\date{#1}}%
+  \gdef\@date{#1}%
   \begingroup%
     % TODO store contents of \thanks command
     \renewcommand{\thanks}[1]{}% swallow \thanks contents
-    \protected@xdef\thedate{#1}%
+    \protected@xdef\thedate{\gmdate #1}%
   \endgroup%
 }
-
 
 % Provides a \publisher command to set the publisher
 
@@ -1178,7 +1181,7 @@
 % The 'fancy' page style is the default style for all pages.
 \fancyhf{} % clear header and footer fields
 \ifthenelse{\boolean{@tufte@twoside}}
-  {\fancyhead[LE]{\thepage\quad\smallcaps{\newlinetospace{\plainauthor}}}%
+  {\fancyhead[LE]{\thepage\quad\smallcaps\plainauthor}%
     \fancyhead[RO]{\smallcaps{\newlinetospace{\plaintitle}}\quad\thepage}}
   {\fancyhead[RE,RO]{\smallcaps{\newlinetospace{\plaintitle}}\quad\thepage}}
 
@@ -1281,13 +1284,16 @@
       \gdef\@@author{\sffamily\Large\allcaps{\@author}\par}%
       \gdef\@@date{\sffamily\Large\allcaps{\@date}\par}%
     }{%
-      \gdef\@@title{\LARGE\itshape\@title\par}%
-      \gdef\@@author{\Large\itshape\@author\par}%
-      \gdef\@@date{\Large\itshape\@date\par}%
+      \gdef\@@title{\LARGE\allcaps\@title\par}%
+      \gdef\@@author{\Large\scshape\MakeLowercase{\@author}\par}%
+      \gdef\@@date{\Large\scshape\MakeLowercase{\@date}\par}%
     }%
-    \@@title
-    \@@author
-    \@@date
+    \begin{fullwidth}
+      \centering
+      \@@title
+      \@@author
+      \@@date
+    \end{fullwidth}
   \endgroup
   \thispagestyle{plain}% suppress the running head
   \tuftebreak% add some space before the text begins
@@ -1334,7 +1340,7 @@
 \titleformat{\subsection}%
   [hang]% shape
   {\normalfont\large\itshape}% format applied to label+text
-  {\thesubsection}% label
+  {\normalfont\thesubsection}% label
   {1em}% horizontal separation between label and title body
   {}% before the title body
   []% after the title body
@@ -1379,40 +1385,39 @@
 \ifthenelse{\boolean{@tufte@toc}}{%
   \titlecontents{part}% FIXME
     [0em] % distance from left margin
-    {\vspace{1.5\baselineskip}\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
+    {\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
     {\contentslabel{2em}} % before w/label (label = ``II'')
     {} % before w/o label
     {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
     [\end{fullwidth}] % after
   \titlecontents{chapter}%
     [0em] % distance from left margin
-    {\vspace{1.5\baselineskip}\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
+    {\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
     {\hspace*{0em}\contentslabel{2em}} % before w/label (label = ``2'')
     {\hspace*{0em}} % before w/o label
     {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
     [\end{fullwidth}] % after
   \titlecontents{section}% FIXME
     [0em] % distance from left margin
-    {\vspace{0\baselineskip}\begin{fullwidth}\Large\rmfamily\itshape} % above (global formatting of entry)
-    {\hspace*{2em}\contentslabel{2em}} % before w/label (label = ``2.6'')
-    {\hspace*{2em}} % before w/o label
+    {\Large\scshape} % above (global formatting of entry)
+    {\hspace*{1.5em}\contentslabel{1.5em}} % before w/label (label = ``2.6'')
+    {\hspace*{1.5em}} % before w/o label
     {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
-    [\end{fullwidth}] % after
+    [\vspace{-0.25ex}] % after
   \titlecontents{subsection}% FIXME
     [0em] % distance from left margin
-    {\vspace{0\baselineskip}\begin{fullwidth}\large\rmfamily\itshape} % above (global formatting of entry)
-    {\hspace*{4em}\contentslabel{4em}} % before w/label (label = ``2.6.1'')
-    {\hspace*{4em}} % before w/o label
+    {\large\rmfamily} % above (global formatting of entry)
+    {\hspace*{3.5em}\contentslabel{2em}} % before w/label (label = ``2.6.1'')
+    {\hspace*{3.5em}} % before w/o label
     {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
-    [\end{fullwidth}] % after
+    [\vspace{-0.25ex}] % after
   \titlecontents{paragraph}% FIXME
     [0em] % distance from left margin
-    {\vspace{0\baselineskip}\begin{fullwidth}\normalsize\rmfamily\itshape} % above (global formatting of entry)
+    {\begin{fullwidth}\normalsize\rmfamily\itshape} % above (global formatting of entry)
     {\hspace*{6em}\contentslabel{2em}} % before w/label (label = ``2.6.0.0.1'')
     {\hspace*{6em}} % before w/o label
     {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
-    [\end{fullwidth}] % after
-}{}
+  }{\renewcommand{\tableofcontents}{}}
 
 % Format lists of figures/tables
 
@@ -1709,36 +1714,53 @@
 
 \RequirePackage{graphicx}
 \RequirePackage{tikz}
+\RequirePackage[framemethod=tikz]{mdframed}
+\RequirePackage{fancybox}
 \RequirePackage{amsmath}
 \RequirePackage{amsfonts}
 \RequirePackage{amsthm}
 \RequirePackage{amsxtra}
 \RequirePackage{amssymb}
 \RequirePackage{mathtools}
+\RequirePackage{thmtools}
 \RequirePackage{mathdots}
 \RequirePackage{microtype}
 \RequirePackage{booktabs}
+\RequirePackage{enumitem}
 \RequirePackage{csquotes}
+\RequirePackage{cleveref}
 
-\newtheoremstyle{plainsc}{10pt}{10pt}{\normalfont\itshape}{}{\normalfont\smallcaps}{.}{.5em}{}
-\newtheoremstyle{definitionsc}{10pt}{10pt}{\normalfont}{}{\normalfont\smallcaps}{.}{.5em}{}
-\newtheoremstyle{remarksc}{10pt}{10pt}{\normalfont}{}{\normalfont\smallcaps}{.}{.5em}{}
+\setlist[enumerate]{itemsep=1pt,topsep=3pt,leftmargin=2em}
 
-\theoremstyle{plainsc}
-\newtheorem{theorem}{Theorem}
-\numberwithin{theorem}{subsection}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{claim}[theorem]{Claim}
-\theoremstyle{definitionsc}
-\newtheorem{definition}[theorem]{Definition}
-\theoremstyle{remarksc}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{exercise}[theorem]{Exercise}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{fact}[theorem]{Fact}
-\newtheorem{problem}[theorem]{Problem}
-\newtheorem{notation}[theorem]{Notation}
+\crefname{section}{\S}{\S\S}
+\Crefname{section}{\S}{\S\S}
+
+\declaretheoremstyle[
+headfont=\normalfont\scshape,
+bodyfont=\normalfont\itshape,
+spaceabove=10pt,
+spacebelow=10pt,
+postheadspace=0.5em
+]{thm}
+
+\declaretheoremstyle[
+headfont=\normalfont\scshape,
+spaceabove=10pt,
+spacebelow=10pt,
+postheadspace=0.5em
+]{plain}
+
+\declaretheorem[style=thm,numberwithin=subsection]{theorem}
+\declaretheorem[style=thm,sibling=theorem]{proposition}
+\declaretheorem[style=thm,sibling=theorem]{lemma}
+\declaretheorem[style=thm,sibling=theorem]{corollary}
+\declaretheorem[style=thm,sibling=theorem]{conjecture}
+\declaretheorem[style=thm,sibling=theorem]{claim}
+\declaretheorem[style=plain,sibling=theorem]{definition}
+\declaretheorem[style=plain,sibling=theorem]{example}
+\declaretheorem[style=plain,sibling=theorem]{exercise}
+\declaretheorem[style=plain,sibling=theorem]{remark}
+\declaretheorem[style=plain,sibling=theorem]{fact}
+\declaretheorem[style=plain,numberwithin=section]{problem}
+
 \endinput
