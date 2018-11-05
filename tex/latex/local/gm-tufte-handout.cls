@@ -1419,6 +1419,10 @@
     {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
   }{\renewcommand{\tableofcontents}{}}
 
+\ifthenelse{\boolean{@tufte@toc}}
+{\newcommand{\sectionbreak}{\clearpage}}
+{}
+
 % Format lists of figures/tables
 
 \renewcommand\listoffigures{%
@@ -1714,6 +1718,7 @@
 
 \RequirePackage{graphicx}
 \RequirePackage{tikz}
+\RequirePackage{pgfplots}
 \RequirePackage[framemethod=tikz]{mdframed}
 \RequirePackage{fancybox}
 \RequirePackage{amsmath}
@@ -1757,10 +1762,14 @@ postheadspace=0.5em
 \declaretheorem[style=thm,sibling=theorem]{conjecture}
 \declaretheorem[style=thm,sibling=theorem]{claim}
 \declaretheorem[style=plain,sibling=theorem]{definition}
-\declaretheorem[style=plain,sibling=theorem]{example}
+\declaretheorem[style=plain,sibling=theorem,name=example]{ex}
 \declaretheorem[style=plain,sibling=theorem]{exercise}
 \declaretheorem[style=plain,sibling=theorem]{remark}
 \declaretheorem[style=plain,sibling=theorem]{fact}
 \declaretheorem[style=plain,numberwithin=section]{problem}
 
+\numberwithin{equation}{section}
+
+\renewcommand{\d}[1]{\mathop{}\!\mathrm{d}#1}
+\DeclareMathOperator{\Span}{span}
 \endinput
