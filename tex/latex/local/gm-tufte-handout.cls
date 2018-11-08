@@ -86,7 +86,9 @@
 % 'pset' option: removes side margins
 \newboolean{@tufte@nomargin}
 \DeclareOptionX[tufte]<common>{nomargin}{\setboolean{@tufte@nomargin}{true}}
+\newboolean{@tufte@pset}
 \DeclareOptionX[tufte]<common>{pset}{
+  \setboolean{@tufte@pset}{true}
   \ExecuteOptionsX[tufte]<common>{nomargin}
   \ExecuteOptionsX[tufte]<common>{notoc}
   \ExecuteOptionsX[tufte]<common>{nobib}
@@ -1766,10 +1768,17 @@ postheadspace=0.5em
 \declaretheorem[style=plain,sibling=theorem]{exercise}
 \declaretheorem[style=plain,sibling=theorem]{remark}
 \declaretheorem[style=plain,sibling=theorem]{fact}
-\declaretheorem[style=plain,numberwithin=section]{problem}
+\declaretheorem[style=plain]{problem}
 
+\ifthenelse{\boolean{@tufte@pset}}{
+  \counterwithout{equation}{section}
+  \counterwithout{theorem}{subsection}
+  \counterwithout{lemma}{subsection}
+}{
 \numberwithin{equation}{section}
+}
 
 \renewcommand{\d}[1]{\mathop{}\!\mathrm{d}#1}
 \DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Dim}{dim}
 \endinput
