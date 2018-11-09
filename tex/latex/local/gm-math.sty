@@ -1,0 +1,18 @@
+\ProvidesPackage{gm-math}
+
+\renewcommand{\d}[2][]{
+\ifthenelse{\equal{#1}{}}
+    {\def\temp {\mathrm{d}}}
+    {\def\temp {\mathrm{d}^{#1}}}
+\mathop{}\!\temp #2}
+\newcommand{\pd}[2][]{
+\ifthenelse{\equal{#1}{}}
+    {\def\temp {\partial}}
+    {\def\temp {\partial^{#1}}}
+\temp #2}
+\newcommand{\dv}[3][]{\frac{\d[#1]{#2}}{\d[#1]{#3}}}
+\newcommand{\pdv}[3][]{\frac{\pd[#1]{#2}}{\pd[#1]{#3}}}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Dim}{dim}
+\DeclareMathOperator{\Ker}{ker}
+\DeclareMathOperator{\Image}{im}

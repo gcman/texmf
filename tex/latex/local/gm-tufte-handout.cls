@@ -1778,7 +1778,6 @@ postheadspace=0.5em
 \numberwithin{equation}{section}
 }
 
-\renewcommand{\d}[1]{\mathop{}\!\mathrm{d}#1}
-\DeclareMathOperator{\Span}{span}
-\DeclareMathOperator{\Dim}{dim}
+\RequirePackage{gm-math}
+
 \endinput
