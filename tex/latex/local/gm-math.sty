@@ -1,5 +1,7 @@
 \ProvidesPackage{gm-math}
 
+\newcommand{\by}[2]{$#1$-by-$#2$}
+
 \renewcommand{\d}[2][]{
 \ifthenelse{\equal{#1}{}}
     {\def\temp {\mathrm{d}}}
@@ -16,3 +18,4 @@
 \DeclareMathOperator{\Dim}{dim}
 \DeclareMathOperator{\Ker}{ker}
 \DeclareMathOperator{\Image}{im}
+\DeclareMathOperator{\Mat}{Mat}
