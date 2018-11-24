@@ -1,6 +1,7 @@
 \ProvidesPackage{gm-math}
 
 \newcommand{\by}[2]{$#1$-by-$#2$}
+\newcommand{\surr}[2]{\left\{\left.#1\,\right|\,#2\right\}}
 
 \renewcommand{\d}[2][]{
 \ifthenelse{\equal{#1}{}}
@@ -14,8 +15,13 @@
 \temp #2}
 \newcommand{\dv}[3][]{\frac{\d[#1]{#2}}{\d[#1]{#3}}}
 \newcommand{\pdv}[3][]{\frac{\pd[#1]{#2}}{\pd[#1]{#3}}}
+
 \DeclareMathOperator{\Span}{span}
 \DeclareMathOperator{\Dim}{dim}
 \DeclareMathOperator{\Ker}{ker}
 \DeclareMathOperator{\Image}{im}
 \DeclareMathOperator{\Mat}{Mat}
+
+\newcommand{\T}{\mathrm{T}}
+\newcommand{\F}{\mathrm{F}}
+\renewcommand{\S}{\square}

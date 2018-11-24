@@ -40,13 +40,11 @@
 \usepackage{footmisc}
 \usepackage{enumitem}
 \usepackage{multicol}
-\usepackage[style=mla,backend=biber]{biblatex}
-\addbibresource{uts-gautam.bib}
-\let\cite\parencite
+%\usepackage[style=mla,backend=biber]{biblatex}
+%\addbibresource{uts-gautam.bib}
+%\let\cite\parencite
 
-\usepackage{fontspec}
-\setmainfont[Ligatures={Required,Common,Contextual,TeX}]{TeX Gyre Schola}
-
+\usepackage{newcent}
 \usepackage{microtype}
 
 \pagestyle{fancy}
@@ -58,14 +56,14 @@
 \setlength{\voffset}{0in}
 \rhead{\authorlastname~\thepage}
 
-\let\printbibliographyold\printbibliography
+%\let\printbibliographyold\printbibliography
 
-\renewcommand{\printbibliography}{
-	\titleformat{name=\section,numberless}
-	{\normalfont\centering}{}{0em}{}
-	\newpage
-	\printbibliographyold
-	}
+%\renewcommand{\printbibliography}{
+%	\titleformat{name=\section,numberless}
+%	{\normalfont\centering}{}{0em}{}
+%	\newpage
+%	\printbibliographyold
+%	}
 
 \AtBeginDocument{
 	\RaggedRight
@@ -77,21 +75,21 @@
 	\RaggedRight
 }
 
-\makeatletter
+%\makeatletter
 
-\DeclareCiteCommand{\textcite}
-{\iffootnote{\usebibmacro{cite:init}}{}%
-	\usebibmacro{prenote}}%
-{\usebibmacro{citeindex}%
-	\iffootnote
-	{\global\booltrue{cbx@mlafootnotes}%
-		\renewcommand*{\newunitpunct}{\addcomma\space}%
-		\usebibmacro{cite:mla:foot}}
-	{\usebibmacro{cite:mla}}}
-{}
-{\usebibmacro{mla:foot:postnote}}
+%\DeclareCiteCommand{\textcite}
+%{\iffootnote{\usebibmacro{cite:init}}{}%
+%	\usebibmacro{prenote}}%
+%{\usebibmacro{citeindex}%
+%	\iffootnote
+%	{\global\booltrue{cbx@mlafootnotes}%
+%		\renewcommand*{\newunitpunct}{\addcomma\space}%
+%		\usebibmacro{cite:mla:foot}}
+%	{\usebibmacro{cite:mla}}}
+%{}
+%{\usebibmacro{mla:foot:postnote}}
 
-\makeatother
+%\makeatother
 
 \renewcommand{\thesection}{\arabic{section}.}
 \renewcommand{\thesubsection}{\thesection\arabic{subsection}}
@@ -118,7 +116,7 @@
 \newenvironment{mlablockquote}[1][\proseindent]{\setlength{\parindent}{#1}\begin{quoting}}{\end{quoting}}
 
 \SetBlockEnvironment{quoting}
-\SetCiteCommand{\autocite}
+%\SetCiteCommand{\autocite}
 \DeclareAutoPunct{.,}
 \renewcommand{\mkcitation}[1]{ (#1)}
 \renewcommand{\mktextquote}[6]{#1#2#3#6#4#5}
@@ -129,3 +127,6 @@
 
 \setlength{\parindent}{0.5in}
 \RaggedRight
+
+\renewcommand{\maketitle}{}
+\renewcommand{\tableofcontents}{}
