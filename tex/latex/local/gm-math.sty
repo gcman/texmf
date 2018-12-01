@@ -2,9 +2,6 @@
 
 \usepackage{xifthen}
 
-\newcommand{\by}[2]{$#1$-by-$#2$}
-\newcommand{\surr}[2]{\left\{\left.#1\,\right|\,#2\right\}}
-
 \renewcommand{\d}[2][]{
 \ifthenelse{\equal{#1}{}}
     {\def\temp {\mathrm{d}}}
@@ -32,7 +29,3 @@
 
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
-
-\newcommand{\T}{\mathrm{T}}
-\newcommand{\F}{\mathrm{F}}
-\renewcommand{\S}{\square}
