@@ -1721,8 +1721,6 @@
 \RequirePackage{graphicx}
 \RequirePackage{tikz}
 \RequirePackage{pgfplots}
-\RequirePackage[framemethod=tikz]{mdframed}
-\RequirePackage{fancybox}
 \RequirePackage{amsmath}
 \RequirePackage{amsfonts}
 \RequirePackage{amsthm}
