@@ -7,13 +7,19 @@ Let LaTeX know what this is.
 #+BEGIN_SRC latex
 \usepackage[svgnames]{xcolor}
 \usepackage{hyperref}
+\hypersetup{colorlinks,
+  bookmarksdepth=subsection,
+  citecolor=DarkGreen,
+  linkcolor=Maroon,
+  urlcolor=DarkBlue}
 \usepackage{tikz}
 #+END_SRC
-* Margin Notes
+* Page Layout
+** Margin Notes
 The first thing we do is set up the geometry of the page with a wide margin.
 This is to accommodate margin notes, figures, and tables.
 #+BEGIN_SRC latex
-\usepackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,textheight=44\baselineskip,headheight=\baselineskip]{geometry}
+\usepackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
 #+END_SRC
 By default, =marginpar= uses the normal font size. It should be =footnotesize=.
 #+BEGIN_SRC latex
@@ -38,7 +44,7 @@ package, which lets margin elements float.
 #+BEGIN_SRC latex
 \usepackage{marginfix}
 #+END_SRC
-* Header
+** Page Header
 The best header package I know of is =fancyhdr=.
 #+BEGIN_SRC latex
 \usepackage{fancyhdr}
@@ -57,8 +63,8 @@ macros for the name of the current (sub)section.
 I don't really have anything to put in the footer, and it looks a little weird.
 #+BEGIN_SRC latex
 \fancyhf{}
-\fancyhead[LE]{\small\thepage\quad{\itshape\Subsectionname}}
-\fancyhead[RO]{\small{\itshape\Sectionname}\quad\thepage}
+\fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
+\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}
 #+END_SRC
 So far, our page numbers only go so far as the body text. To make the margin
 notes seem like a unified part of the page, we should extend the page headers
@@ -69,21 +75,66 @@ into the margin.
 \addtolength{\headwidth}{\marginparsep}
 \addtolength{\headwidth}{\marginparwidth}
 #+END_SRC
+** Table of Contents
+This code is inspired by =tufte-latex= and =classicthesis=.
+#+BEGIN_SRC latex
+\usepackage{titletoc}
+\setcounter{tocdepth}{3}
+  \titlecontents{chapter}%
+    [0em] % distance from left margin
+    {\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
+    {\hspace*{0em}\contentslabel{2em}} % before w/label (label = ``2'')
+    {\hspace*{0em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\end{fullwidth}] % after
+  \titlecontents{section}
+    [0em] % distance from left margin
+    {\large\scshape} % above (global formatting of entry)
+    {\hspace*{1.5em}\contentslabel{1.5em}} % before w/label (label = ``2.6'')
+    {\hspace*{1.5em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\vspace{-0.25ex}] % after
+  \titlecontents{subsection}% FIXME
+    [0em] % distance from left margin
+    {\rmfamily} % above (global formatting of entry)
+    {\hspace*{3.5em}\contentslabel{2em}} % before w/label (label = ``2.6.1'')
+    {\hspace*{3.5em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\vspace{-0.25ex}] % after
+  }
+#+END_SRC
 * Typography
-For now, I'm using the default Computer Modern font, with old-style numerals.
+I think Computer Modern is too light of a font, and everyone uses it. Right now,
+I'm a fan of the Palatino Linotype font, with old-style numerals. The =mathpazo=
+package provides a matching math typeface.
 #+BEGIN_SRC latex
 \usepackage[osf,sc]{mathpazo}
 #+END_SRC
 Microtype is pretty awesome, though I need to set up some more detailed
-configuration here.
+configuration here. I decrease =stretch= and =shrink= parameters from the default
+of 20 because I had some issues with blurry lines, though that could have just
+been my PDF viewer.
 #+BEGIN_SRC latex
-\usepackage{microtype}
+\usepackage[stretch=10,shrink=10,tracking=true]{microtype}
 #+END_SRC
-The default is a bit too tightly spaced for my taste, at least with Palatino
+Allow superscripts to protrude into the outer margin.
+#+BEGIN_SRC latex
+\SetProtrusion{encoding={*},family={*},series={*},size={6,7}}
+              {1={ ,750},2={ ,500},3={ ,500},4={ ,500},5={ ,500},
+               6={ ,500},7={ ,600},8={ ,500},9={ ,500},0={ ,500}}
+#+END_SRC
+We don't want tracking on small caps, which looks too spread out.
+#+BEGIN_SRC latex
+\SetTracking{encoding={*}, shape=sc}{0}
+#+END_SRC
+The default line spacing is a bit too tight for my taste, at least with Palatino
 Linotype font.
 #+BEGIN_SRC latex
 \usepackage{setspace}
 \linespread{1.15}
+#+END_SRC
+#+BEGIN_SRC latex
+\setlength{\parskip}{0pt}
 #+END_SRC
 ** Math
 What else would we use if not the AMS standard?
@@ -99,7 +150,9 @@ I also load in my own set of macros/definitions for math symbols.
 #+END_SRC
 ** Theorems
 We use =thmtools= to actually create the theorems and set up their counters, and
-we use =mdframed= to decorate them.
+we use =mdframed= to decorate them. I do eventually want to switch to =tcolorbox=,
+which seems to have cleaner syntax and much broader customizability and
+functionality.
 #+BEGIN_SRC latex
 \usepackage{thmtools}
 \usepackage[framemethod=tikz]{mdframed}
