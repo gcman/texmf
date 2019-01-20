@@ -1,0 +1,91 @@
+* Setup
+#+BEGIN_SRC latex
+\ProvidePackage{gm-notes}
+#+END_SRC
+* Margin Notes
+The first thing we do is set up the geometry of the page with a wide margin.
+This is to accommodate margin notes, figures, and tables.
+#+BEGIN_SRC latex
+\usepackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,textheight=44\baselineskip,headheight=\baselineskip]{geometry}
+#+END_SRC
+By default, =marginpar= uses the normal font size. It should be =footnotesize=.
+#+BEGIN_SRC latex
+\makeatletter
+\long\def\@ympar#1{%
+  \@savemarbox\@marbox{\footnotesize #1}%
+  \global\setbox\@currbox\copy\@marbox
+  \@xympar}
+\makeatother
+#+END_SRC
+I also want footnotes to be set in the margin.
+#+BEGIN_SRC latex
+\usepackage[footnote]{snotez}
+\setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
+              note-mark-format=#1,
+              note-mark-sep=\enskip}
+#+END_SRC
+A document with many margin notes sometimes has some formatting problems,
+because the margin notes begin on the line in which they are declared in the
+text, which leads to overlapping notes. To fix this, we use the =marginfix=
+package, which lets margin elements float.
+#+BEGIN_SRC latex
+\usepackage{marginfix}
+#+END_SRC
+* Header
+The best header package I know of is =fancyhdr=.
+#+BEGIN_SRC lates
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+#+END_SRC
+I don't use chapters in my notes, and I want to include info about the section
+and subsection in the header. Instead of attempting the dark wizardry necessary
+to get this behaviour from the =\leftmark= and =\rightmark= macros, I make my own
+macros for the name of the current (sub)section.
+#+BEGIN_SRC latex
+\let\Sectionmark\sectionmark
+\def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
+\let\Subsectionmark\subsectionmark
+\def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
+#+END_SRC
+I don't really have anything to put in the footer, and it looks a little weird.
+#+BEGIN_SRC latex
+\fancyhf{}
+\fancyhead[LE]{\small\thepage\quad{\itshape\Subsectionname}}
+\fancyhead[RO]{\small{\itshape\Sectionname}\quad\thepage}
+#+END_SRC
+So far, our page numbers only go so far as the body text. To make the margin
+notes seem like a unified part of the page, we should extend the page headers
+into the margin.
+#+BEGIN_SRC latex
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headwidth}{\textwidth}
+\addtolength{\headwidth}{\marginparsep}
+\addtolength{\headwidth}{\marginparwidth}
+#+END_SRC
+* Typography
+For now, I'm using the default Computer Modern font, with old-style numerals.
+#+BEGIN_SRC latex
+\usepackage{cfr-lm}
+#+END_SRC
+Microtype is pretty awesome, though I need to set up some more detailed
+configuration here.
+#+BEGIN_SRC latex
+\usepackage{microtype}
+#+END_SRC
+** Math
+What else would we use if not the AMS standard?
+#+BEGIN_SRC latex
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+#+END_SRC
+I also load in my own set of macros/definitions for math symbols.
+#+BEGIN_SRC latex
+\usepackage{gm-math}
+#+END_SRC
+* COMMENT Options
+#+PROPERTY: header-args :tangle gm-notes.sty
+# Local variables:
+# after-save-hook: org-babel-tangle
+# end:
