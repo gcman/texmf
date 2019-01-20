@@ -1,6 +1,13 @@
 * Setup
+Let LaTeX know what this is.
 #+BEGIN_SRC latex
-\ProvidePackage{gm-notes}
+\ProvidesPackage{gm-notes}
+#+END_SRC
+** Basic Packages
+#+BEGIN_SRC latex
+\usepackage[svgnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{tikz}
 #+END_SRC
 * Margin Notes
 The first thing we do is set up the geometry of the page with a wide margin.
@@ -12,7 +19,7 @@ By default, =marginpar= uses the normal font size. It should be =footnotesize=.
 #+BEGIN_SRC latex
 \makeatletter
 \long\def\@ympar#1{%
-  \@savemarbox\@marbox{\footnotesize #1}%
+  \@savemarbox\@marbox{\singlespacing\footnotesize #1}%
   \global\setbox\@currbox\copy\@marbox
   \@xympar}
 \makeatother
@@ -33,7 +40,7 @@ package, which lets margin elements float.
 #+END_SRC
 * Header
 The best header package I know of is =fancyhdr=.
-#+BEGIN_SRC lates
+#+BEGIN_SRC latex
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 #+END_SRC
@@ -65,12 +72,18 @@ into the margin.
 * Typography
 For now, I'm using the default Computer Modern font, with old-style numerals.
 #+BEGIN_SRC latex
-\usepackage{cfr-lm}
+\usepackage[osf,sc]{mathpazo}
 #+END_SRC
 Microtype is pretty awesome, though I need to set up some more detailed
 configuration here.
 #+BEGIN_SRC latex
 \usepackage{microtype}
+#+END_SRC
+The default is a bit too tightly spaced for my taste, at least with Palatino
+Linotype font.
+#+BEGIN_SRC latex
+\usepackage{setspace}
+\linespread{1.15}
 #+END_SRC
 ** Math
 What else would we use if not the AMS standard?
@@ -83,6 +96,117 @@ What else would we use if not the AMS standard?
 I also load in my own set of macros/definitions for math symbols.
 #+BEGIN_SRC latex
 \usepackage{gm-math}
+#+END_SRC
+** Theorems
+We use =thmtools= to actually create the theorems and set up their counters, and
+we use =mdframed= to decorate them.
+#+BEGIN_SRC latex
+\usepackage{thmtools}
+\usepackage[framemethod=tikz]{mdframed}
+#+END_SRC
+This next bit is going to be pretty ugly and repetitive, but I don't know a
+better way to do it in LaTeX.
+
+First, we define the colours.
+#+BEGIN_SRC latex
+\colorlet{ThmColor}{Blue}
+\colorlet{PropColor}{FireBrick}
+\colorlet{ExColor}{ForestGreen}
+\colorlet{DefColor}{Gainsboro}
+\colorlet{CorColor}{DimGrey}
+\colorlet{RemColor}{Moccasin}
+#+END_SRC
+*** Theorem-esque
+Borders on top and bottom.
+#+BEGIN_SRC latex
+\declaretheoremstyle[
+headfont=\color{MediumBlue}\normalfont\scshape,
+bodyfont=\normalfont\itshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=ThmColor!5,
+linecolor=ThmColor!50,
+linewidth=1pt,
+leftline=false,
+rightline=false}]{thm}
+
+\declaretheoremstyle[
+headfont=\color{DarkRed!75}\normalfont\scshape,
+bodyfont=\normalfont\itshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=PropColor!5,
+linecolor=PropColor!40,
+linewidth=1pt,
+leftline=false,
+rightline=false}]{prop}
+
+\declaretheoremstyle[
+headfont=\normalfont\scshape,
+bodyfont=\normalfont\itshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=CorColor!10,
+linecolor=CorColor!50,
+linewidth=1pt,
+leftline=false,
+rightline=false}]{cor}
+#+END_SRC
+*** Definition-Esque
+Bar coming out of side.
+#+BEGIN_SRC latex
+\declaretheoremstyle[
+headfont=\color{Green}\normalfont\scshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=ExColor!5,
+linecolor=ExColor!50,
+linewidth=5pt,
+topline=false,
+bottomline=false,
+rightline=false,}]{ex}
+
+\declaretheoremstyle[
+headfont=\color{DimGray}\normalfont\scshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=DefColor!20,
+linecolor=DefColor,
+linewidth=5pt,
+topline=false,
+bottomline=false,
+rightline=false,}]{def}
+
+\declaretheoremstyle[
+headfont=\color{Goldenrod}\normalfont\scshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=RemColor!20,
+linecolor=RemColor!80,
+linewidth=5pt,
+topline=false,
+bottomline=false,
+rightline=false,}]{rem}
+#+END_SRC
+*** Plain
+The default style, without any colours.
+#+BEGIN_SRC latex
+\declaretheoremstyle[
+headfont=\normalfont\scshape,
+spaceabove=10pt,
+spacebelow=10pt,
+postheadspace=0.5em
+]{plain}
+#+END_SRC
+*** Assigning Styles
+Using =thmtools=, we actually declare the theorems.
+#+BEGIN_SRC latex
+\declaretheorem[style=thm,numberwithin=section,name=theorem]{theorem}
+\declaretheorem[style=prop,sibling=theorem,name=proposition]{proposition}
+\declaretheorem[style=prop,sibling=theorem,name=lemma]{lemma}
+\declaretheorem[style=cor,sibling=theorem,name=corollary]{corollary}
+\declaretheorem[style=cor,sibling=theorem,name=claim]{claim}
+\declaretheorem[style=rem,sibling=theorem,name=conjecture]{conjecture}
+\declaretheorem[style=rem,sibling=theorem,name=remark]{remark}
+\declaretheorem[style=rem,sibling=theorem,name=fact]{fact}
+\declaretheorem[style=def,sibling=theorem,name=definition]{definition}
+\declaretheorem[style=ex,sibling=theorem,name=example]{ex}
+\declaretheorem[style=plain,sibling=theorem]{exercise}
+\declaretheorem[style=plain]{problem}
 #+END_SRC
 * COMMENT Options
 #+PROPERTY: header-args :tangle gm-notes.sty
