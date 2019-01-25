@@ -14,7 +14,37 @@ Let LaTeX know what this is.
   urlcolor=DarkBlue}
 \usepackage{tikz}
 #+END_SRC
+References.
+#+BEGIN_SRC latex
+\usepackage{cleveref}
+\crefname{section}{\S}{\S\S}
+\Crefname{section}{\S}{\S\S}
+#+END_SRC
 * Page Layout
+** Title Block
+#+BEGIN_SRC latex
+\newlength{\overflowingheadlen}
+\setlength{\overflowingheadlen}{\linewidth}
+\addtolength{\overflowingheadlen}{\marginparsep}
+\addtolength{\overflowingheadlen}{\marginparwidth}
+\renewcommand{\maketitle}{%
+  \begingroup
+  \setlength{\parindent}{0pt}
+  \setlength{\parskip}{5pt}
+  \let\@@title
+  \blockmargin
+  \makebox[\overflowingheadlen][l]{
+    \begin{minipage}{\overflowingheadlen}
+      \centering
+      \LARGE\textls[100]{\MakeUppercase{\@title}}\par
+      \Large\scshape\MakeLowercase{\@author}\par
+      \large\scshape\MakeLowercase{\@date}\par
+    \end{minipage}}
+  \unblockmargin
+  \endgroup
+  \thispagestyle{plain}
+  \pagenumbering{gobble}}
+#+END_SRC
 ** Margin Notes
 The first thing we do is set up the geometry of the page with a wide margin.
 This is to accommodate margin notes, figures, and tables.
@@ -101,7 +131,6 @@ This code is inspired by =tufte-latex= and =classicthesis=.
     {\hspace*{3.5em}} % before w/o label
     {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
     [\vspace{-0.25ex}] % after
-  }
 #+END_SRC
 * Typography
 I think Computer Modern is too light of a font, and everyone uses it. Right now,
@@ -136,12 +165,18 @@ Linotype font.
 #+BEGIN_SRC latex
 \setlength{\parskip}{0pt}
 #+END_SRC
+** Lists
+#+BEGIN_SRC latex
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=1pt,topsep=3pt,leftmargin=2em}
+#+END_SRC
 ** Math
 What else would we use if not the AMS standard?
 #+BEGIN_SRC latex
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{amsxtra}
 \usepackage{amsfonts}
 #+END_SRC
 I also load in my own set of macros/definitions for math symbols.
@@ -156,6 +191,7 @@ functionality.
 #+BEGIN_SRC latex
 \usepackage{thmtools}
 \usepackage[framemethod=tikz]{mdframed}
+\mdfsetup{skipabove=1em,skipbelow=0pt}
 #+END_SRC
 This next bit is going to be pretty ugly and repetitive, but I don't know a
 better way to do it in LaTeX.
