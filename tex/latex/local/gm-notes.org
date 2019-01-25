@@ -3,6 +3,19 @@ Let LaTeX know what this is.
 #+BEGIN_SRC latex
 \ProvidesPackage{gm-notes}
 #+END_SRC
+** Math
+What else would we use if not the AMS standard?
+#+BEGIN_SRC latex
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsxtra}
+\usepackage{amsfonts}
+#+END_SRC
+I also load in my own set of macros/definitions for math symbols.
+#+BEGIN_SRC latex
+\usepackage{gm-math}
+#+END_SRC
 ** Basic Packages
 #+BEGIN_SRC latex
 \usepackage[svgnames]{xcolor}
@@ -30,15 +43,17 @@ References.
 \renewcommand{\maketitle}{%
   \begingroup
   \setlength{\parindent}{0pt}
-  \setlength{\parskip}{5pt}
   \let\@@title
   \blockmargin
   \makebox[\overflowingheadlen][l]{
     \begin{minipage}{\overflowingheadlen}
       \centering
-      \LARGE\textls[100]{\MakeUppercase{\@title}}\par
-      \Large\scshape\MakeLowercase{\@author}\par
+      \LARGE\textls[150]{\MakeUppercase{\@title}}\par
+      \vspace{0.1\baselineskip}
+      \large\scshape\MakeLowercase{\@author}\par
+      \vspace{0.1\baselineskip}
       \large\scshape\MakeLowercase{\@date}\par
+      \vspace{\baselineskip}
     \end{minipage}}
   \unblockmargin
   \endgroup
@@ -169,19 +184,6 @@ Linotype font.
 #+BEGIN_SRC latex
 \usepackage{enumitem}
 \setlist[enumerate]{itemsep=1pt,topsep=3pt,leftmargin=2em}
-#+END_SRC
-** Math
-What else would we use if not the AMS standard?
-#+BEGIN_SRC latex
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{amsxtra}
-\usepackage{amsfonts}
-#+END_SRC
-I also load in my own set of macros/definitions for math symbols.
-#+BEGIN_SRC latex
-\usepackage{gm-math}
 #+END_SRC
 ** Theorems
 We use =thmtools= to actually create the theorems and set up their counters, and
