@@ -39,6 +39,8 @@ References.
 \DeclareOption{notoc}{\renewcommand{\tableofcontents}{}}
 \newif\ifthmsecnum\thmsecnumtrue
 \DeclareOption{nosec}{\thmsecnumfalse}
+\newif\ifnosubsec
+\DeclareOption{nosubsec}{\nosubsectrue}
 \ProcessOptions\relax
 #+END_SRC
 * Page Layout
@@ -117,7 +119,11 @@ I don't really have anything to put in the footer, and it looks a little weird.
 #+BEGIN_SRC latex
 \fancyhf{}
 \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
+\ifnosubsec
+\fancyhead[RO]{\thepage}
+\else
 \fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}
+\fi
 #+END_SRC
 So far, our page numbers only go so far as the body text. To make the margin
 notes seem like a unified part of the page, we should extend the page headers

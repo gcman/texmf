@@ -25,6 +25,8 @@
 \DeclareOption{notoc}{\renewcommand{\tableofcontents}{}}
 \newif\ifthmsecnum\thmsecnumtrue
 \DeclareOption{nosec}{\thmsecnumfalse}
+\newif\ifnosubsec
+\DeclareOption{nosubsec}{\nosubsectrue}
 \ProcessOptions\relax
 
 \newlength{\overflowingheadlen}
@@ -77,7 +79,11 @@
 
 \fancyhf{}
 \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
+\ifnosubsec
+\fancyhead[RO]{\thepage}
+\else
 \fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}
+\fi
 
 \renewcommand{\headrulewidth}{0pt}
 \setlength{\headwidth}{\textwidth}
