@@ -1,24 +1,14 @@
-* Setup
-Let LaTeX know what this is.
-#+BEGIN_SRC latex
 \ProvidesClass{gm-notes}
 \LoadClass[10pt,twoside]{article}
-#+END_SRC
-** Math
-What else would we use if not the AMS standard?
-#+BEGIN_SRC latex
+
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 \RequirePackage{amsthm}
 \RequirePackage{amsxtra}
 \RequirePackage{amsfonts}
-#+END_SRC
-I also load in my own set of macros/definitions for math symbols.
-#+BEGIN_SRC latex
+
 \RequirePackage{gm-math}
-#+END_SRC
-** Basic Packages
-#+BEGIN_SRC latex
+
 \RequirePackage[svgnames]{xcolor}
 \RequirePackage{hyperref}
 \hypersetup{colorlinks,
@@ -27,23 +17,16 @@ I also load in my own set of macros/definitions for math symbols.
   linkcolor=Maroon,
   urlcolor=DarkBlue}
 \RequirePackage{tikz}
-#+END_SRC
-References.
-#+BEGIN_SRC latex
+
 \RequirePackage{cleveref}
 \crefname{section}{\S}{\S\S}
 \Crefname{section}{\S}{\S\S}
-#+END_SRC
-** Package Options
-#+BEGIN_SRC latex
+
 \DeclareOption{notoc}{\renewcommand{\tableofcontents}{}}
 \newif\ifthmsecnum\thmsecnumtrue
 \DeclareOption{nosec}{\thmsecnumfalse}
 \ProcessOptions\relax
-#+END_SRC
-* Page Layout
-** Title Block
-#+BEGIN_SRC latex
+
 \newlength{\overflowingheadlen}
 \setlength{\overflowingheadlen}{\linewidth}
 \addtolength{\overflowingheadlen}{\marginparsep}
@@ -67,70 +50,40 @@ References.
   \endgroup
   \thispagestyle{plain}
   \pagenumbering{gobble}}
-#+END_SRC
-** Margin Notes
-The first thing we do is set up the geometry of the page with a wide margin.
-This is to accommodate margin notes, figures, and tables.
-#+BEGIN_SRC latex
+
 \RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
-#+END_SRC
-By default, =marginpar= uses the normal font size. It should be =footnotesize=.
-#+BEGIN_SRC latex
+
 \makeatletter
 \long\def\@ympar#1{%
   \@savemarbox\@marbox{\singlespacing\footnotesize #1}%
   \global\setbox\@currbox\copy\@marbox
   \@xympar}
 \makeatother
-#+END_SRC
-I also want footnotes to be set in the margin.
-#+BEGIN_SRC latex
+
 \RequirePackage[footnote]{snotez}
 \setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
               note-mark-format=#1,
               note-mark-sep=\enskip}
-#+END_SRC
-A document with many margin notes sometimes has some formatting problems,
-because the margin notes begin on the line in which they are declared in the
-text, which leads to overlapping notes. To fix this, we use the =marginfix=
-package, which lets margin elements float.
-#+BEGIN_SRC latex
+
 \RequirePackage{marginfix}
-#+END_SRC
-** Page Header
-The best header package I know of is =fancyhdr=.
-#+BEGIN_SRC latex
+
 \RequirePackage{fancyhdr}
 \pagestyle{fancy}
-#+END_SRC
-I don't use chapters in my notes, and I want to include info about the section
-and subsection in the header. Instead of attempting the dark wizardry necessary
-to get this behaviour from the =\leftmark= and =\rightmark= macros, I make my own
-macros for the name of the current (sub)section.
-#+BEGIN_SRC latex
+
 \let\Sectionmark\sectionmark
 \def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
 \let\Subsectionmark\subsectionmark
 \def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
-#+END_SRC
-I don't really have anything to put in the footer, and it looks a little weird.
-#+BEGIN_SRC latex
+
 \fancyhf{}
 \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
 \fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}
-#+END_SRC
-So far, our page numbers only go so far as the body text. To make the margin
-notes seem like a unified part of the page, we should extend the page headers
-into the margin.
-#+BEGIN_SRC latex
+
 \renewcommand{\headrulewidth}{0pt}
 \setlength{\headwidth}{\textwidth}
 \addtolength{\headwidth}{\marginparsep}
 \addtolength{\headwidth}{\marginparwidth}
-#+END_SRC
-** Table of Contents
-This code is inspired by =tufte-latex= and =classicthesis=.
-#+BEGIN_SRC latex
+
 \RequirePackage{titletoc}
 \setcounter{tocdepth}{3}
   \titlecontents{chapter}%
@@ -154,70 +107,36 @@ This code is inspired by =tufte-latex= and =classicthesis=.
     {\hspace*{3.5em}} % before w/o label
     {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
     [\vspace{-0.25ex}] % after
-#+END_SRC
-* Typography
-I think Computer Modern is too light of a font, and everyone uses it. Right now,
-I'm a fan of the Palatino Linotype font, with old-style numerals. The =mathpazo=
-package provides a matching math typeface.
-#+BEGIN_SRC latex
+
 \RequirePackage[osf,sc]{mathpazo}
-#+END_SRC
-Microtype is pretty awesome, though I need to set up some more detailed
-configuration here. I decrease =stretch= and =shrink= parameters from the default
-of 20 because I had some issues with blurry lines, though that could have just
-been my PDF viewer.
-#+BEGIN_SRC latex
+
 \RequirePackage[stretch=10,shrink=10,tracking=true]{microtype}
-#+END_SRC
-Allow superscripts to protrude into the outer margin.
-#+BEGIN_SRC latex
+
 \SetProtrusion{encoding={*},family={*},series={*},size={6,7}}
               {1={ ,750},2={ ,500},3={ ,500},4={ ,500},5={ ,500},
                6={ ,500},7={ ,600},8={ ,500},9={ ,500},0={ ,500}}
-#+END_SRC
-We don't want tracking on small caps, which looks too spread out.
-#+BEGIN_SRC latex
+
 \SetTracking{encoding={*}, shape=sc}{0}
-#+END_SRC
-The default line spacing is a bit too tight for my taste, at least with Palatino
-Linotype font.
-#+BEGIN_SRC latex
+
 \RequirePackage{setspace}
 \linespread{1.15}
-#+END_SRC
-#+BEGIN_SRC latex
+
 \setlength{\parskip}{0pt}
-#+END_SRC
-** Lists
-#+BEGIN_SRC latex
+
 \RequirePackage{enumitem}
 \setlist[enumerate]{itemsep=1pt,topsep=3pt,leftmargin=2em}
-#+END_SRC
-** Theorems
-We use =thmtools= to actually create the theorems and set up their counters, and
-we use =mdframed= to decorate them. I do eventually want to switch to =tcolorbox=,
-which seems to have cleaner syntax and much broader customizability and
-functionality.
-#+BEGIN_SRC latex
+
 \RequirePackage{thmtools}
 \RequirePackage[framemethod=tikz]{mdframed}
 \mdfsetup{skipabove=1em,skipbelow=0pt}
-#+END_SRC
-This next bit is going to be pretty ugly and repetitive, but I don't know a
-better way to do it in LaTeX.
 
-First, we define the colours.
-#+BEGIN_SRC latex
 \colorlet{ThmColor}{Blue}
 \colorlet{PropColor}{FireBrick}
 \colorlet{ExColor}{ForestGreen}
 \colorlet{DefColor}{Gainsboro}
 \colorlet{CorColor}{DimGrey}
 \colorlet{RemColor}{Moccasin}
-#+END_SRC
-*** Theorem-esque
-Borders on top and bottom.
-#+BEGIN_SRC latex
+
 \declaretheoremstyle[
 headfont=\color{MediumBlue}\normalfont\scshape,
 bodyfont=\normalfont\itshape,
@@ -247,10 +166,7 @@ linecolor=CorColor!50,
 linewidth=1pt,
 leftline=false,
 rightline=false}]{cor}
-#+END_SRC
-*** Definition-Esque
-Bar coming out of side.
-#+BEGIN_SRC latex
+
 \declaretheoremstyle[
 headfont=\color{Green}\normalfont\scshape,
 postheadspace=0.5em,
@@ -280,29 +196,20 @@ linewidth=5pt,
 topline=false,
 bottomline=false,
 rightline=false,}]{rem}
-#+END_SRC
-*** Plain
-The default style, without any colours.
-#+BEGIN_SRC latex
+
 \declaretheoremstyle[
 headfont=\normalfont\scshape,
 spaceabove=10pt,
 spacebelow=10pt,
 postheadspace=0.5em
 ]{plain}
-#+END_SRC
-*** Assigning Styles
-Using =thmtools=, we actually declare theorems. First we check if we want
-numbering like =Theorem 1.1= or like =Theorem 1=.
-#+BEGIN_SRC latex
+
 \ifthmsecnum
 \declaretheorem[style=thm,numberwithin=section,name=theorem]{theorem}
 \else
 \declaretheorem[style=thm,name=theorem]{theorem}
 \fi
-#+END_SRC
-Then we make the rest of the theorems.
-#+BEGIN_SRC latex
+
 \declaretheorem[style=prop,sibling=theorem,name=proposition]{proposition}
 \declaretheorem[style=prop,sibling=theorem,name=lemma]{lemma}
 \declaretheorem[style=cor,sibling=theorem,name=corollary]{corollary}
@@ -314,13 +221,5 @@ Then we make the rest of the theorems.
 \declaretheorem[style=ex,sibling=theorem,name=example]{ex}
 \declaretheorem[style=plain,sibling=theorem]{exercise}
 \declaretheorem[style=plain]{problem}
-#+END_SRC
-* End
-#+BEGIN_SRC latex
+
 \endinput
-#+END_SRC
-* COMMENT Options
-#+PROPERTY: header-args :tangle gm-notes.cls
-# Local variables:
-# after-save-hook: org-babel-tangle
-# end:
