@@ -33,6 +33,11 @@ References.
 \crefname{section}{\S}{\S\S}
 \Crefname{section}{\S}{\S\S}
 #+END_SRC
+** Package Options
+#+BEGIN_SRC latex
+\DeclareOption{notoc}{\renewcommand{\tableofcontents}{}}
+\ProcessOptions\relax
+#+END_SRC
 * Page Layout
 ** Title Block
 #+BEGIN_SRC latex
@@ -284,9 +289,13 @@ postheadspace=0.5em
 ]{plain}
 #+END_SRC
 *** Assigning Styles
-Using =thmtools=, we actually declare the theorems.
+Using =thmtools=, we actually declare theorems. First we check if we want
+numbering like =Theorem 1.1= or like =Theorem 1=.
 #+BEGIN_SRC latex
 \declaretheorem[style=thm,numberwithin=section,name=theorem]{theorem}
+#+END_SRC
+Then we make the rest of the theorems.
+#+BEGIN_SRC latex
 \declaretheorem[style=prop,sibling=theorem,name=proposition]{proposition}
 \declaretheorem[style=prop,sibling=theorem,name=lemma]{lemma}
 \declaretheorem[style=cor,sibling=theorem,name=corollary]{corollary}
