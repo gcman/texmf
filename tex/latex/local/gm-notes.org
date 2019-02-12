@@ -27,6 +27,7 @@ I also load in my own set of macros/definitions for math symbols.
   linkcolor=Maroon,
   urlcolor=DarkBlue}
 \RequirePackage{tikz}
+\RequirePackage{changepage}
 #+END_SRC
 References.
 #+BEGIN_SRC latex
@@ -44,38 +45,45 @@ References.
 \ProcessOptions\relax
 #+END_SRC
 * Page Layout
-** Title Block
-#+BEGIN_SRC latex
-\newlength{\overflowingheadlen}
-\setlength{\overflowingheadlen}{\linewidth}
-\addtolength{\overflowingheadlen}{\marginparsep}
-\addtolength{\overflowingheadlen}{\marginparwidth}
-\renewcommand{\maketitle}{%
-  \begingroup
-  \setlength{\parindent}{0pt}
-  \let\@@title
-  \blockmargin
-  \makebox[\overflowingheadlen][l]{
-    \begin{minipage}{\overflowingheadlen}
-      \centering
-      \LARGE\textls[150]{\MakeUppercase{\@title}}\par
-      \vspace{0.1\baselineskip}
-      \large\scshape\MakeLowercase{\@author}\par
-      \vspace{0.1\baselineskip}
-      \large\scshape\MakeLowercase{\@date}\par
-      \vspace{\baselineskip}
-    \end{minipage}}
-  \unblockmargin
-  \endgroup
-  \thispagestyle{plain}
-  \pagenumbering{gobble}}
-#+END_SRC
-** Margin Notes
+** 1.5 Column
 The first thing we do is set up the geometry of the page with a wide margin.
 This is to accommodate margin notes, figures, and tables.
 #+BEGIN_SRC latex
 \RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
 #+END_SRC
+Then we set up the lengths.
+#+BEGIN_SRC latex
+\newlength{\@overhang}
+\newlength{\@fullwidth}
+\newcommand{\CalculateLength}{%
+  \setlength{\@overhang}{\marginparwidth}
+  \addtolength{\@overhang}{\marginparsep}
+
+  \setlength{\@fullwidth}{\textwidth}
+  \addtolength{\@fullwidth}{\@overhang}}
+\AtBeginDocument{\CalculateLength}
+#+END_SRC
+Sometimes, we would like an element to span the full width of the page.
+#+BEGIN_SRC latex
+\newenvironment{fullwidth}{\begin{adjustwidth*}{}{-\@overhang}}{\end{adjustwidth*}}
+#+END_SRC
+** Title Block
+The title is centered across the whole page.
+#+BEGIN_SRC latex
+\renewcommand{\maketitle}{%
+  \begin{fullwidth}
+    \centering
+    \LARGE\textls[150]{\MakeUppercase{\@title}}\par
+    \vspace{0.1\baselineskip}
+    \large\scshape\MakeLowercase{\@author}\par
+    \vspace{0.1\baselineskip}
+    \large\scshape\MakeLowercase{\@date}\par
+    \vspace{\baselineskip}
+  \end{fullwidth}
+  \thispagestyle{plain}
+  \pagenumbering{gobble}}
+#+END_SRC
+** Margin Notes
 By default, =marginpar= uses the normal font size. It should be =footnotesize=.
 #+BEGIN_SRC latex
 \makeatletter
@@ -91,13 +99,6 @@ I also want footnotes to be set in the margin.
 \setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
               note-mark-format=#1,
               note-mark-sep=\enskip}
-#+END_SRC
-A document with many margin notes sometimes has some formatting problems,
-because the margin notes begin on the line in which they are declared in the
-text, which leads to overlapping notes. To fix this, we use the =marginfix=
-package, which lets margin elements float.
-#+BEGIN_SRC latex
-\RequirePackage{marginfix}
 #+END_SRC
 ** Page Header
 The best header package I know of is =fancyhdr=.

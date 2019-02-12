@@ -17,6 +17,7 @@
   linkcolor=Maroon,
   urlcolor=DarkBlue}
 \RequirePackage{tikz}
+\RequirePackage{changepage}
 
 \RequirePackage{cleveref}
 \crefname{section}{\S}{\S\S}
@@ -29,31 +30,32 @@
 \DeclareOption{nosubsec}{\nosubsectrue}
 \ProcessOptions\relax
 
-\newlength{\overflowingheadlen}
-\setlength{\overflowingheadlen}{\linewidth}
-\addtolength{\overflowingheadlen}{\marginparsep}
-\addtolength{\overflowingheadlen}{\marginparwidth}
+\RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
+
+\newlength{\@overhang}
+\newlength{\@fullwidth}
+\newcommand{\CalculateLength}{%
+  \setlength{\@overhang}{\marginparwidth}
+  \addtolength{\@overhang}{\marginparsep}
+
+  \setlength{\@fullwidth}{\textwidth}
+  \addtolength{\@fullwidth}{\@overhang}}
+\AtBeginDocument{\CalculateLength}
+
+\newenvironment{fullwidth}{\begin{adjustwidth*}{}{-\@overhang}}{\end{adjustwidth*}}
+
 \renewcommand{\maketitle}{%
-  \begingroup
-  \setlength{\parindent}{0pt}
-  \let\@@title
-  \blockmargin
-  \makebox[\overflowingheadlen][l]{
-    \begin{minipage}{\overflowingheadlen}
-      \centering
-      \LARGE\textls[150]{\MakeUppercase{\@title}}\par
-      \vspace{0.1\baselineskip}
-      \large\scshape\MakeLowercase{\@author}\par
-      \vspace{0.1\baselineskip}
-      \large\scshape\MakeLowercase{\@date}\par
-      \vspace{\baselineskip}
-    \end{minipage}}
-  \unblockmargin
-  \endgroup
+  \begin{fullwidth}
+    \centering
+    \LARGE\textls[150]{\MakeUppercase{\@title}}\par
+    \vspace{0.1\baselineskip}
+    \large\scshape\MakeLowercase{\@author}\par
+    \vspace{0.1\baselineskip}
+    \large\scshape\MakeLowercase{\@date}\par
+    \vspace{\baselineskip}
+  \end{fullwidth}
   \thispagestyle{plain}
   \pagenumbering{gobble}}
-
-\RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
 
 \makeatletter
 \long\def\@ympar#1{%
@@ -66,8 +68,6 @@
 \setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
               note-mark-format=#1,
               note-mark-sep=\enskip}
-
-\RequirePackage{marginfix}
 
 \RequirePackage{fancyhdr}
 \pagestyle{fancy}
