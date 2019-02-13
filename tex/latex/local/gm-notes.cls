@@ -67,13 +67,17 @@
   \settototalheight\marginstretched{\parbox{\marginparwidth}{\footnotesize#2}}%
   \settototalheight\marginunstretched{\parbox{\marginparwidth}{\footnotesize\singlespacing#2}}%
   \setlength{\margindifference}{\the\marginstretched-\the\marginunstretched}%
-  \marginpar{\hbox{}\vspace*{-\the\margindifference}\vspace*{-1.739\baselineskip}\vspace{#1}\singlespacing\footnotesize#2}} % the 1.739 comes from 2/1.15, where 1.15 is the main body's line spacing
+  \marginpar{\hbox{}\vspace*{-\the\margindifference}\vspace*{-1\baselineskip}\vspace{#1}\singlespacing\footnotesize#2}}
 
 \RequirePackage[footnote]{snotez}
 \setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
+              text-format+=\singlespacing,
               note-mark-sep=\,}
 
 \RequirePackage{marginfix}
+
+\RequirePackage{marginnote}
+\renewcommand*{\marginfont}{\normalfont\footnotesize}
 
 \RequirePackage{fancyhdr}
 \pagestyle{fancy}
@@ -131,7 +135,7 @@
 \SetTracking{encoding={*}, shape=sc}{0}
 
 \RequirePackage{setspace}
-\linespread{\@linespread}
+\setstretch{\@linespread}
 
 \setlength{\parskip}{0pt}
 

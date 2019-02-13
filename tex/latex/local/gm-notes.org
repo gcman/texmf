@@ -108,12 +108,13 @@ unstretched, and shift the whole thing up by the difference in those lengths.
   \settototalheight\marginstretched{\parbox{\marginparwidth}{\footnotesize#2}}%
   \settototalheight\marginunstretched{\parbox{\marginparwidth}{\footnotesize\singlespacing#2}}%
   \setlength{\margindifference}{\the\marginstretched-\the\marginunstretched}%
-  \marginpar{\hbox{}\vspace*{-\the\margindifference}\vspace*{-1.739\baselineskip}\vspace{#1}\singlespacing\footnotesize#2}} % the 1.739 comes from 2/1.15, where 1.15 is the main body's line spacing
+  \marginpar{\hbox{}\vspace*{-\the\margindifference}\vspace*{-1\baselineskip}\vspace{#1}\singlespacing\footnotesize#2}}
 #+END_SRC
 I also want footnotes to be set in the margin.
 #+BEGIN_SRC latex
 \RequirePackage[footnote]{snotez}
 \setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
+              text-format+=\singlespacing,
               note-mark-sep=\,}
 #+END_SRC
 In documents with many =marginpar= elements, spacing can become messed up. The
@@ -121,6 +122,14 @@ In documents with many =marginpar= elements, spacing can become messed up. The
 floating powers.
 #+BEGIN_SRC latex
 \RequirePackage{marginfix}
+#+END_SRC
+Unfortunately, the floating powers of =marginpar= do not work when =marginpar= is
+called inside another floating element, such as a figure or a table. For these
+circumstances, we use =marginnote=. These elements do not automatically float, so
+they are not preferred for normal use.
+#+BEGIN_SRC latex
+\RequirePackage{marginnote}
+\renewcommand*{\marginfont}{\normalfont\footnotesize}
 #+END_SRC
 ** Page Header
 The best header package I know of is =fancyhdr=.
@@ -212,7 +221,7 @@ The default line spacing is a bit too tight for my taste, at least with Palatino
 Linotype font.
 #+BEGIN_SRC latex
 \RequirePackage{setspace}
-\linespread{\@linespread}
+\setstretch{\@linespread}
 #+END_SRC
 #+BEGIN_SRC latex
 \setlength{\parskip}{0pt}
