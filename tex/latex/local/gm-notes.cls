@@ -16,6 +16,7 @@
   citecolor=DarkGreen,
   linkcolor=Maroon,
   urlcolor=DarkBlue}
+\RequirePackage{calc}
 \RequirePackage{tikz}
 \RequirePackage{changepage}
 
@@ -30,10 +31,12 @@
 \DeclareOption{nosubsec}{\nosubsectrue}
 \ProcessOptions\relax
 
-\RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
-
 \newlength{\@overhang}
 \newlength{\@fullwidth}
+\newcommand{\@linespread}{1.15}
+
+\RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
+
 \newcommand{\CalculateLength}{%
   \setlength{\@overhang}{\marginparwidth}
   \addtolength{\@overhang}{\marginparsep}
@@ -57,17 +60,20 @@
   \thispagestyle{plain}
   \pagenumbering{gobble}}
 
-\makeatletter
-\long\def\@ympar#1{%
-  \@savemarbox\@marbox{\singlespacing\footnotesize #1}%
-  \global\setbox\@currbox\copy\@marbox
-  \@xympar}
-\makeatother
+\newlength\marginstretched
+\newlength\marginunstretched
+\newlength\margindifference
+\newcommand\mn[2][0pt]{%
+  \settototalheight\marginstretched{\parbox{\marginparwidth}{\footnotesize#2}}%
+  \settototalheight\marginunstretched{\parbox{\marginparwidth}{\footnotesize\singlespacing#2}}%
+  \setlength{\margindifference}{\the\marginstretched-\the\marginunstretched}%
+  \marginpar{\hbox{}\vspace*{-\the\margindifference}\vspace*{-1.739\baselineskip}\vspace{#1}\singlespacing\footnotesize#2}} % the 1.739 comes from 2/1.15, where 1.15 is the main body's line spacing
 
 \RequirePackage[footnote]{snotez}
 \setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
-              note-mark-format=#1,
-              note-mark-sep=\enskip}
+              note-mark-sep=\,}
+
+\RequirePackage{marginfix}
 
 \RequirePackage{fancyhdr}
 \pagestyle{fancy}
@@ -125,7 +131,7 @@
 \SetTracking{encoding={*}, shape=sc}{0}
 
 \RequirePackage{setspace}
-\linespread{1.15}
+\linespread{\@linespread}
 
 \setlength{\parskip}{0pt}
 

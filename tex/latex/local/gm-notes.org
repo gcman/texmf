@@ -26,6 +26,7 @@ I also load in my own set of macros/definitions for math symbols.
   citecolor=DarkGreen,
   linkcolor=Maroon,
   urlcolor=DarkBlue}
+\RequirePackage{calc}
 \RequirePackage{tikz}
 \RequirePackage{changepage}
 #+END_SRC
@@ -44,6 +45,15 @@ References.
 \DeclareOption{nosubsec}{\nosubsectrue}
 \ProcessOptions\relax
 #+END_SRC
+** Lengths
+The length =overhang= will be the part of the document after the text block, and
+=fullwidth= is the width of the full document.
+#+BEGIN_SRC latex
+\newlength{\@overhang}
+\newlength{\@fullwidth}
+\newcommand{\@linespread}{1.15}
+#+END_SRC
+
 * Page Layout
 ** 1.5 Column
 The first thing we do is set up the geometry of the page with a wide margin.
@@ -53,8 +63,6 @@ This is to accommodate margin notes, figures, and tables.
 #+END_SRC
 Then we set up the lengths.
 #+BEGIN_SRC latex
-\newlength{\@overhang}
-\newlength{\@fullwidth}
 \newcommand{\CalculateLength}{%
   \setlength{\@overhang}{\marginparwidth}
   \addtolength{\@overhang}{\marginparsep}
@@ -84,21 +92,35 @@ The title is centered across the whole page.
   \pagenumbering{gobble}}
 #+END_SRC
 ** Margin Notes
-By default, =marginpar= uses the normal font size. It should be =footnotesize=.
+I'm not entirely sure how this works, but =marginpar= seems pick an anchor point
+where the command is mentioned in the text, find the bottom of the element that
+would then be generated (if its top edge was aligned with the anchor point) and
+/then/ squish down. This means that the bottom of a =marginpar= with narrower
+inter-line spacing than the body text will be where it would be if it had the
+same inter-line spacing as the body text. This means the top will be too low. To
+counteract this, we calculate the lengths of each marginpar, stretched and
+unstretched, and shift the whole thing up by the difference in those lengths.
 #+BEGIN_SRC latex
-\makeatletter
-\long\def\@ympar#1{%
-  \@savemarbox\@marbox{\singlespacing\footnotesize #1}%
-  \global\setbox\@currbox\copy\@marbox
-  \@xympar}
-\makeatother
+\newlength\marginstretched
+\newlength\marginunstretched
+\newlength\margindifference
+\newcommand\mn[2][0pt]{%
+  \settototalheight\marginstretched{\parbox{\marginparwidth}{\footnotesize#2}}%
+  \settototalheight\marginunstretched{\parbox{\marginparwidth}{\footnotesize\singlespacing#2}}%
+  \setlength{\margindifference}{\the\marginstretched-\the\marginunstretched}%
+  \marginpar{\hbox{}\vspace*{-\the\margindifference}\vspace*{-1.739\baselineskip}\vspace{#1}\singlespacing\footnotesize#2}} % the 1.739 comes from 2/1.15, where 1.15 is the main body's line spacing
 #+END_SRC
 I also want footnotes to be set in the margin.
 #+BEGIN_SRC latex
 \RequirePackage[footnote]{snotez}
 \setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
-              note-mark-format=#1,
-              note-mark-sep=\enskip}
+              note-mark-sep=\,}
+#+END_SRC
+In documents with many =marginpar= elements, spacing can become messed up. The
+=marginfix= package, aptly enough, fixes these margin elements by giving them
+floating powers.
+#+BEGIN_SRC latex
+\RequirePackage{marginfix}
 #+END_SRC
 ** Page Header
 The best header package I know of is =fancyhdr=.
@@ -190,7 +212,7 @@ The default line spacing is a bit too tight for my taste, at least with Palatino
 Linotype font.
 #+BEGIN_SRC latex
 \RequirePackage{setspace}
-\linespread{1.15}
+\linespread{\@linespread}
 #+END_SRC
 #+BEGIN_SRC latex
 \setlength{\parskip}{0pt}
