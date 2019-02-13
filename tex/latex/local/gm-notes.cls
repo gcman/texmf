@@ -1,5 +1,5 @@
 \ProvidesClass{gm-notes}
-\LoadClass[10pt,twoside]{article}
+\LoadClass[10pt,twoside]{report}
 
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
@@ -100,7 +100,20 @@
 \addtolength{\headwidth}{\marginparsep}
 \addtolength{\headwidth}{\marginparwidth}
 
+\renewcommand\thesection{\arabic{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+
+\RequirePackage{titlesec}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\marginnote{\centering\Huge\thechapter}[-0.9em]}{0pt}{\Huge\bfseries}
+\titlespacing*{\chapter}{0pt}{0pt}{3ex}{0pt}
+
 \RequirePackage{titletoc}
+\renewcommand\tableofcontents{%
+    \section*{\contentsname
+        \@mkboth{%
+           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+    \@starttoc{toc}%
+    }
 \setcounter{tocdepth}{3}
   \titlecontents{chapter}%
     [0em] % distance from left margin
@@ -144,14 +157,14 @@
 
 \RequirePackage{thmtools}
 \RequirePackage[framemethod=tikz]{mdframed}
-\mdfsetup{skipabove=1em,skipbelow=0pt}
+\mdfsetup{skipabove=0.75em plus 0.25em minus 0.25em,skipbelow=0.1em minus 0.1em}
 
 \colorlet{ThmColor}{Blue}
 \colorlet{PropColor}{FireBrick}
 \colorlet{ExColor}{ForestGreen}
 \colorlet{DefColor}{Gainsboro}
 \colorlet{CorColor}{DimGrey}
-\colorlet{RemColor}{Moccasin}
+\colorlet{RemColor}{Moccasin} % Dandelion
 
 \declaretheoremstyle[
 headfont=\color{MediumBlue}\normalfont\scshape,
@@ -206,7 +219,7 @@ rightline=false,}]{def}
 \declaretheoremstyle[
 headfont=\color{Goldenrod}\normalfont\scshape,
 postheadspace=0.5em,
-mdframed={backgroundcolor=RemColor!20,
+mdframed={backgroundcolor=RemColor!25,
 linecolor=RemColor!80,
 linewidth=5pt,
 topline=false,

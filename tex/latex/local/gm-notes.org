@@ -2,7 +2,7 @@
 Let LaTeX know what this is.
 #+BEGIN_SRC latex
 \ProvidesClass{gm-notes}
-\LoadClass[10pt,twoside]{article}
+\LoadClass[10pt,twoside]{report}
 #+END_SRC
 ** Math
 What else would we use if not the AMS standard?
@@ -53,7 +53,6 @@ The length =overhang= will be the part of the document after the text block, and
 \newlength{\@fullwidth}
 \newcommand{\@linespread}{1.15}
 #+END_SRC
-
 * Page Layout
 ** 1.5 Column
 The first thing we do is set up the geometry of the page with a wide margin.
@@ -166,10 +165,27 @@ into the margin.
 \addtolength{\headwidth}{\marginparsep}
 \addtolength{\headwidth}{\marginparwidth}
 #+END_SRC
+** Titling
+Number sections outside of chapter.
+#+BEGIN_SRC latex
+\renewcommand\thesection{\arabic{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+#+END_SRC
+#+BEGIN_SRC latex
+\RequirePackage{titlesec}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\marginnote{\centering\Huge\thechapter}[-0.9em]}{0pt}{\Huge\bfseries}
+\titlespacing*{\chapter}{0pt}{0pt}{3ex}{0pt}
+#+END_SRC
 ** Table of Contents
 This code is inspired by =tufte-latex= and =classicthesis=.
 #+BEGIN_SRC latex
 \RequirePackage{titletoc}
+\renewcommand\tableofcontents{%
+    \section*{\contentsname
+        \@mkboth{%
+           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+    \@starttoc{toc}%
+    }
 \setcounter{tocdepth}{3}
   \titlecontents{chapter}%
     [0em] % distance from left margin
@@ -239,7 +255,7 @@ functionality.
 #+BEGIN_SRC latex
 \RequirePackage{thmtools}
 \RequirePackage[framemethod=tikz]{mdframed}
-\mdfsetup{skipabove=1em,skipbelow=0pt}
+\mdfsetup{skipabove=0.75em plus 0.25em minus 0.25em,skipbelow=0.1em minus 0.1em}
 #+END_SRC
 This next bit is going to be pretty ugly and repetitive, but I don't know a
 better way to do it in LaTeX.
@@ -251,7 +267,7 @@ First, we define the colours.
 \colorlet{ExColor}{ForestGreen}
 \colorlet{DefColor}{Gainsboro}
 \colorlet{CorColor}{DimGrey}
-\colorlet{RemColor}{Moccasin}
+\colorlet{RemColor}{Moccasin} % Dandelion
 #+END_SRC
 *** Theorem-esque
 Borders on top and bottom.
@@ -312,7 +328,7 @@ rightline=false,}]{def}
 \declaretheoremstyle[
 headfont=\color{Goldenrod}\normalfont\scshape,
 postheadspace=0.5em,
-mdframed={backgroundcolor=RemColor!20,
+mdframed={backgroundcolor=RemColor!25,
 linecolor=RemColor!80,
 linewidth=5pt,
 topline=false,
