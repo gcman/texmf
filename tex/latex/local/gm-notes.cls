@@ -18,7 +18,8 @@
   urlcolor=DarkBlue}
 \RequirePackage{calc}
 \RequirePackage{tikz}
-\RequirePackage{changepage}
+\RequirePackage[strict]{changepage}
+\RequirePackage{ragged2e}
 
 \RequirePackage{cleveref}
 \crefname{section}{\S}{\S\S}
@@ -57,27 +58,16 @@
     \large\scshape\MakeLowercase{\@date}\par
     \vspace{\baselineskip}
   \end{fullwidth}
-  \thispagestyle{plain}
-  \pagenumbering{gobble}}
-
-\newlength\marginstretched
-\newlength\marginunstretched
-\newlength\margindifference
-\newcommand\mn[2][0pt]{%
-  \settototalheight\marginstretched{\parbox{\marginparwidth}{\footnotesize#2}}%
-  \settototalheight\marginunstretched{\parbox{\marginparwidth}{\footnotesize\singlespacing#2}}%
-  \setlength{\margindifference}{\the\marginstretched-\the\marginunstretched}%
-  \marginpar{\hbox{}\vspace*{-\the\margindifference}\vspace*{-1\baselineskip}\vspace{#1}\singlespacing\footnotesize#2}}
+  \thispagestyle{plain}}
 
 \RequirePackage[footnote]{snotez}
 \setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
               text-format+=\singlespacing,
               note-mark-sep=\,}
 
-\RequirePackage{marginfix}
-
 \RequirePackage{marginnote}
-\renewcommand*{\marginfont}{\normalfont\footnotesize}
+\renewcommand*{\marginnotevadjust}{-0.5\baselineskip}
+\renewcommand*{\marginfont}{\linespread{1}\normalfont\footnotesize\justify}
 
 \RequirePackage{fancyhdr}
 \pagestyle{fancy}
@@ -105,7 +95,6 @@
 
 \RequirePackage{titlesec}
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\marginnote{\centering\Huge\thechapter}[-0.9em]}{0pt}{\Huge\bfseries}
-\titlespacing*{\chapter}{0pt}{0pt}{3ex}{0pt}
 
 \RequirePackage{titletoc}
 \renewcommand\tableofcontents{%

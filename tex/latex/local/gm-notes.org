@@ -28,7 +28,8 @@ I also load in my own set of macros/definitions for math symbols.
   urlcolor=DarkBlue}
 \RequirePackage{calc}
 \RequirePackage{tikz}
-\RequirePackage{changepage}
+\RequirePackage[strict]{changepage}
+\RequirePackage{ragged2e}
 #+END_SRC
 References.
 #+BEGIN_SRC latex
@@ -87,48 +88,22 @@ The title is centered across the whole page.
     \large\scshape\MakeLowercase{\@date}\par
     \vspace{\baselineskip}
   \end{fullwidth}
-  \thispagestyle{plain}
-  \pagenumbering{gobble}}
+  \thispagestyle{plain}}
 #+END_SRC
 ** Margin Notes
-I'm not entirely sure how this works, but =marginpar= seems pick an anchor point
-where the command is mentioned in the text, find the bottom of the element that
-would then be generated (if its top edge was aligned with the anchor point) and
-/then/ squish down. This means that the bottom of a =marginpar= with narrower
-inter-line spacing than the body text will be where it would be if it had the
-same inter-line spacing as the body text. This means the top will be too low. To
-counteract this, we calculate the lengths of each marginpar, stretched and
-unstretched, and shift the whole thing up by the difference in those lengths.
-#+BEGIN_SRC latex
-\newlength\marginstretched
-\newlength\marginunstretched
-\newlength\margindifference
-\newcommand\mn[2][0pt]{%
-  \settototalheight\marginstretched{\parbox{\marginparwidth}{\footnotesize#2}}%
-  \settototalheight\marginunstretched{\parbox{\marginparwidth}{\footnotesize\singlespacing#2}}%
-  \setlength{\margindifference}{\the\marginstretched-\the\marginunstretched}%
-  \marginpar{\hbox{}\vspace*{-\the\margindifference}\vspace*{-1\baselineskip}\vspace{#1}\singlespacing\footnotesize#2}}
-#+END_SRC
-I also want footnotes to be set in the margin.
+I want footnotes to be set in the margin.
 #+BEGIN_SRC latex
 \RequirePackage[footnote]{snotez}
 \setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
               text-format+=\singlespacing,
               note-mark-sep=\,}
 #+END_SRC
-In documents with many =marginpar= elements, spacing can become messed up. The
-=marginfix= package, aptly enough, fixes these margin elements by giving them
-floating powers.
-#+BEGIN_SRC latex
-\RequirePackage{marginfix}
-#+END_SRC
-Unfortunately, the floating powers of =marginpar= do not work when =marginpar= is
-called inside another floating element, such as a figure or a table. For these
-circumstances, we use =marginnote=. These elements do not automatically float, so
-they are not preferred for normal use.
+We use =marginnote= rather than =marginpar=, because I've tried the latter before,
+and it was a big hassle to get automatic alignment working.
 #+BEGIN_SRC latex
 \RequirePackage{marginnote}
-\renewcommand*{\marginfont}{\normalfont\footnotesize}
+\renewcommand*{\marginnotevadjust}{-0.5\baselineskip}
+\renewcommand*{\marginfont}{\linespread{1}\normalfont\footnotesize\justify}
 #+END_SRC
 ** Page Header
 The best header package I know of is =fancyhdr=.
@@ -174,7 +149,6 @@ Number sections outside of chapter.
 #+BEGIN_SRC latex
 \RequirePackage{titlesec}
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\marginnote{\centering\Huge\thechapter}[-0.9em]}{0pt}{\Huge\bfseries}
-\titlespacing*{\chapter}{0pt}{0pt}{3ex}{0pt}
 #+END_SRC
 ** Table of Contents
 This code is inspired by =tufte-latex= and =classicthesis=.
