@@ -77,6 +77,8 @@
 \let\Subsectionmark\subsectionmark
 \def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
 
+\newcommand{\Sectionname}{}
+\newcommand{\Subsectionname}{}
 \fancyhf{}
 \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
 \ifnosubsec

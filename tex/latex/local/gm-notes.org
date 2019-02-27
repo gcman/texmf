@@ -123,6 +123,8 @@ macros for the name of the current (sub)section.
 #+END_SRC
 I don't really have anything to put in the footer, and it looks a little weird.
 #+BEGIN_SRC latex
+\newcommand{\Sectionname}{}
+\newcommand{\Subsectionname}{}
 \fancyhf{}
 \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
 \ifnosubsec
