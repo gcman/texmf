@@ -58,7 +58,7 @@
     \large\scshape\MakeLowercase{\@date}\par
     \vspace{\baselineskip}
   \end{fullwidth}
-  \thispagestyle{plain}}
+  \thispagestyle{empty}}
 
 \RequirePackage[footnote]{snotez}
 \setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
