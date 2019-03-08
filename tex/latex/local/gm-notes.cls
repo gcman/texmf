@@ -36,7 +36,7 @@
 \newlength{\@fullwidth}
 \newcommand{\@linespread}{1.15}
 
-\RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
+\RequirePackage[letterpaper,left=1in,top=1in,bottom=1in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
 
 \newcommand{\CalculateLength}{%
   \setlength{\@overhang}{\marginparwidth}
