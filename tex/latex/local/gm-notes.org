@@ -13,10 +13,6 @@ What else would we use if not the AMS standard?
 \RequirePackage{amsxtra}
 \RequirePackage{amsfonts}
 #+END_SRC
-I also load in my own set of macros/definitions for math symbols.
-#+BEGIN_SRC latex
-\RequirePackage{gm-math}
-#+END_SRC
 ** Basic Packages
 #+BEGIN_SRC latex
 \RequirePackage[svgnames]{xcolor}

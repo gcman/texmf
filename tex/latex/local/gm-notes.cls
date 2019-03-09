@@ -7,8 +7,6 @@
 \RequirePackage{amsxtra}
 \RequirePackage{amsfonts}
 
-\RequirePackage{gm-math}
-
 \RequirePackage[svgnames]{xcolor}
 \RequirePackage{hyperref}
 \hypersetup{colorlinks,
