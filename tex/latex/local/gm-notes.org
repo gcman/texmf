@@ -72,6 +72,9 @@ Sometimes, we would like an element to span the full width of the page.
 \newenvironment{fullwidth}{\begin{adjustwidth*}{}{-\@overhang}}{\end{adjustwidth*}}
 #+END_SRC
 ** Title Block
+#+BEGIN_SRC latex
+\renewcommand{\@author}{Gautam Manohar}
+#+END_SRC
 The title is centered across the whole page.
 #+BEGIN_SRC latex
 \renewcommand{\maketitle}{%

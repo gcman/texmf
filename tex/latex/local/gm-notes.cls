@@ -46,6 +46,8 @@
 
 \newenvironment{fullwidth}{\begin{adjustwidth*}{}{-\@overhang}}{\end{adjustwidth*}}
 
+\renewcommand{\@author}{Gautam Manohar}
+
 \renewcommand{\maketitle}{%
   \begin{fullwidth}
     \centering
