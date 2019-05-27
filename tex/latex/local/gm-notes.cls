@@ -1,5 +1,38 @@
-\ProvidesClass{gm-notes}
-\LoadClass[10pt,twoside]{report}
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesClass{gm-notes}[2019/04/20]
+
+\RequirePackage{xkeyval}
+\RequirePackage{xifthen}
+
+\newboolean{@gm@thmsecnum}\setboolean{@gm@thmsecnum}{true}
+\DeclareOptionX[gm]{nosec}{\setboolean{@gm@thmsecnum}{false}}
+
+\DeclareOptionX[gm]{notoc}{\AtBeginDocument{\renewcommand{\tableofcontents}{}}}
+
+\newboolean{@gm@nosubsec}
+\DeclareOptionX[gm]{nosubsec}{\setboolean{@gm@nosubsec}{true}}
+
+\newboolean{@gm@titlepage}
+\DeclareOptionX[gm]{titlepage}{\setboolean{@gm@titlepage}{true}}
+
+\newboolean{@gm@wide}
+\DeclareOptionX[gm]{wide}{\setboolean{@gm@wide}{true}}
+
+\newboolean{@gm@ref}
+\DeclareOptionX[gm]{ref}{\setboolean{@gm@ref}{true}}
+
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{tufte-handout}}
+
+\ProcessOptionsX*[gm]\relax
+
+\ifthenelse{\boolean{@gm@wide}}{
+  \PassOptionsToPackage{letterpaper,margin=1in}{geometry}
+}{
+  \PassOptionsToPackage{letterpaper,left=1in,top=1in,bottom=0.9in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip}{geometry}
+}
+
+\PassOptionsToClass{symmetric,nobib}{tufte-handout}
+\LoadClass{tufte-handout}
 
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
@@ -7,145 +40,58 @@
 \RequirePackage{amsxtra}
 \RequirePackage{amsfonts}
 
-\RequirePackage[svgnames]{xcolor}
-\RequirePackage{hyperref}
 \hypersetup{colorlinks,
   bookmarksdepth=subsection,
   citecolor=DarkGreen,
   linkcolor=Maroon,
   urlcolor=DarkBlue}
-\RequirePackage{calc}
-\RequirePackage{tikz}
-\RequirePackage[strict]{changepage}
-\RequirePackage{ragged2e}
 
-\RequirePackage{cleveref}
-\crefname{section}{\S}{\S\S}
-\Crefname{section}{\S}{\S\S}
+\RequirePackage{fontspec}
 
-\DeclareOption{notoc}{\renewcommand{\tableofcontents}{}}
-\newif\ifthmsecnum\thmsecnumtrue
-\DeclareOption{nosec}{\thmsecnumfalse}
-\newif\ifnosubsec
-\DeclareOption{nosubsec}{\nosubsectrue}
-\ProcessOptions\relax
+\setmainfont[Ligatures=TeX,Numbers={OldStyle,Proportional}]{TeX Gyre Pagella}
 
-\newlength{\@overhang}
-\newlength{\@fullwidth}
-\newcommand{\@linespread}{1.15}
+\RequirePackage{mathpazo}
 
-\RequirePackage[letterpaper,left=1in,top=1in,bottom=1in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
+% \RequirePackage[Latin,Greek]{ucharclasses}
 
-\newcommand{\CalculateLength}{%
-  \setlength{\@overhang}{\marginparwidth}
-  \addtolength{\@overhang}{\marginparsep}
-
-  \setlength{\@fullwidth}{\textwidth}
-  \addtolength{\@fullwidth}{\@overhang}}
-\AtBeginDocument{\CalculateLength}
-
-\newenvironment{fullwidth}{\begin{adjustwidth*}{}{-\@overhang}}{\end{adjustwidth*}}
-
-\renewcommand{\@author}{Gautam Manohar}
-
-\renewcommand{\maketitle}{%
-  \begin{fullwidth}
-    \centering
-    \LARGE\textls[150]{\MakeUppercase{\@title}}\par
-    \vspace{0.1\baselineskip}
-    \large\scshape\MakeLowercase{\@author}\par
-    \vspace{0.1\baselineskip}
-    \large\scshape\MakeLowercase{\@date}\par
-    \vspace{\baselineskip}
-  \end{fullwidth}
-  \thispagestyle{empty}}
-
-\RequirePackage[footnote]{snotez}
-\setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
-              text-format+=\singlespacing,
-              note-mark-sep=\,}
-
-\RequirePackage{marginnote}
-\renewcommand*{\marginnotevadjust}{-0.5\baselineskip}
-\renewcommand*{\marginfont}{\linespread{1}\normalfont\footnotesize\justify}
-
-\RequirePackage{fancyhdr}
-\pagestyle{fancy}
-
-\let\Sectionmark\sectionmark
-\def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
-\let\Subsectionmark\subsectionmark
-\def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
-
-\newcommand{\Sectionname}{}
-\newcommand{\Subsectionname}{}
-\fancyhf{}
-\fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
-\ifnosubsec
-\fancyhead[RO]{\thepage}
-\else
-\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}
-\fi
-
-\renewcommand{\headrulewidth}{0pt}
-\setlength{\headwidth}{\textwidth}
-\addtolength{\headwidth}{\marginparsep}
-\addtolength{\headwidth}{\marginparwidth}
-
-\renewcommand\thesection{\arabic{section}}
-\renewcommand\thesubsection{\thesection.\arabic{subsection}}
-
-\RequirePackage{titlesec}
-\titleformat{\chapter}[hang]{\Huge\bfseries}{\marginnote{\centering\Huge\thechapter}[-0.9em]}{0pt}{\Huge\bfseries}
-
-\RequirePackage{titletoc}
-\renewcommand\tableofcontents{%
-    \section*{\contentsname
-        \@mkboth{%
-           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
-    \@starttoc{toc}%
-    }
-\setcounter{tocdepth}{3}
-  \titlecontents{chapter}%
-    [0em] % distance from left margin
-    {\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
-    {\hspace*{0em}\contentslabel{2em}} % before w/label (label = ``2'')
-    {\hspace*{0em}} % before w/o label
-    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
-    [\end{fullwidth}] % after
-  \titlecontents{section}
-    [0em] % distance from left margin
-    {\large\scshape} % above (global formatting of entry)
-    {\hspace*{1.5em}\contentslabel{1.5em}} % before w/label (label = ``2.6'')
-    {\hspace*{1.5em}} % before w/o label
-    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
-    [\vspace{-0.25ex}] % after
-  \titlecontents{subsection}% FIXME
-    [0em] % distance from left margin
-    {\rmfamily} % above (global formatting of entry)
-    {\hspace*{3.5em}\contentslabel{2em}} % before w/label (label = ``2.6.1'')
-    {\hspace*{3.5em}} % before w/o label
-    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
-    [\vspace{-0.25ex}] % after
-
-\RequirePackage[osf,sc]{mathpazo}
-
-\RequirePackage[stretch=10,shrink=10,tracking=true]{microtype}
-
-\SetProtrusion{encoding={*},family={*},series={*},size={6,7}}
-              {1={ ,750},2={ ,500},3={ ,500},4={ ,500},5={ ,500},
-               6={ ,500},7={ ,600},8={ ,500},9={ ,500},0={ ,500}}
-
-\SetTracking{encoding={*}, shape=sc}{0}
-
-\RequirePackage{setspace}
-\setstretch{\@linespread}
-
-\setlength{\parskip}{0pt}
+% \newfontfamily\mynormal[Ligatures=TeX,Numbers={OldStyle,Proportional}]{TeX Gyre Pagella}
+% \setDefaultTransitions{\mynormal}{}
+% \newfontfamily\mygreek{GFS Porson}
+% \setTransitionsForGreek{\mygreek}{}
 
 \RequirePackage{enumitem}
 \setlist[enumerate]{itemsep=1pt,topsep=3pt,leftmargin=2em}
 
+\ifthenelse{\boolean{@gm@ref}}
+{\RequirePackage[style=chicago-authordate,autocite=footnote,backend=biber]{biblatex}
+\usepackage{xparse}
+\usepackage{xpatch}
+\makeatletter
+\xpatchcmd{\@footnotetext}%
+{\color@begingroup}
+{\color@begingroup\toggletrue{blx@footnote}}
+{}
+{}
+\makeatother
+\DeclareCiteCommand{\sidecitehelper}
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+\usebibmacro{cite}}
+{\multicitedelim}
+{\usebibmacro{cite:postnote}}
+\ExplSyntaxOn
+\NewDocumentCommand\sidecite{D<>{}O{}om}{%
+\iftoggle{blx@footnote}
+{\cs_set_protected_nopar:Npn \__sct_wrapper:nn ##1 ##2 {\mkbibparens{##2}}}
+{\cs_set_protected_nopar:Npn \__sct_wrapper:nn ##1 ##2 {\sidenote[][##1]{##2}}}
+{\IfNoValueTF{#3}
+{\__sct_wrapper:nn{#1}{\sidecitehelper[#2]{#4}}}
+{\__sct_wrapper:nn{#1}{\sidecitehelper[#2][#3]{#4}}}}
+}
+\ExplSyntaxOff}
+{}
+
+\RequirePackage{tikz}
 \RequirePackage{thmtools}
 \RequirePackage[framemethod=tikz]{mdframed}
 \mdfsetup{skipabove=0.75em plus 0.25em minus 0.25em,skipbelow=0.1em minus 0.1em}
@@ -224,11 +170,9 @@ spacebelow=10pt,
 postheadspace=0.5em
 ]{plain}
 
-\ifthmsecnum
-\declaretheorem[style=thm,numberwithin=section,name=theorem]{theorem}
-\else
-\declaretheorem[style=thm,name=theorem]{theorem}
-\fi
+\ifthenelse{\boolean{@gm@thmsecnum}}
+{\declaretheorem[style=thm,numberwithin=section,name=theorem]{theorem}}
+{\declaretheorem[style=thm,name=theorem]{theorem}}
 
 \declaretheorem[style=prop,sibling=theorem,name=proposition]{proposition}
 \declaretheorem[style=prop,sibling=theorem,name=lemma]{lemma}
@@ -241,5 +185,111 @@ postheadspace=0.5em
 \declaretheorem[style=ex,sibling=theorem,name=example]{ex}
 \declaretheorem[style=plain,sibling=theorem]{exercise}
 \declaretheorem[style=plain]{problem}
+
+\renewenvironment{fullwidth}{}{}
+
+\makeatletter
+\gdef\@author{Gautam Manohar}
+
+\ifthenelse{\boolean{@gm@titlepage}}
+{\newcommand*{\@course}{Course}
+  \newcommand*{\course}[1]{\gdef\@course{#1}}
+  \renewcommand{\maketitle}{}
+  \AtBeginDocument{%
+    \begin{titlepage}
+      \raggedleft
+      \rule{1pt}{\textheight}
+      \hspace{0.05\textwidth}
+      \parbox[b]{0.75\textwidth}{
+        {\Huge\bfseries \@title}\\[1.5\baselineskip]
+        {\large\itshape \@course}\\[9\baselineskip]
+        {\Large\scshape \@author}\\
+        \vspace{0.42\textheight}
+        {\noindent \@date}\\[\baselineskip]}
+    \end{titlepage}}}
+{\renewcommand{\maketitle}{%
+    \begin{fullwidth}
+      \centering
+      \LARGE\so{\MakeUppercase{\@title}}\par
+      \vspace{0.1\baselineskip}
+      \large\scshape\MakeLowercase{\@author}\par
+      \vspace{0.1\baselineskip}
+      \large\scshape\MakeLowercase{\@date}\par
+      \vspace{\baselineskip}
+    \end{fullwidth}
+    \thispagestyle{empty}}}
+\makeatother
+
+\renewcommand\tableofcontents{%
+    \section*{\contentsname
+        \@mkboth{%
+           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+    \@starttoc{toc}}
+\setcounter{tocdepth}{3}
+  \titlecontents{chapter}%
+    [0em] % distance from left margin
+    {\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
+    {\hspace*{0em}\contentslabel{2em}} % before w/label (label = ``2'')
+    {\hspace*{0em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\end{fullwidth}] % after
+  \titlecontents{section}
+    [0em] % distance from left margin
+    {\large\scshape} % above (global formatting of entry)
+    {\hspace*{1.5em}\contentslabel{1.5em}} % before w/label (label = ``2.6'')
+    {\hspace*{1.5em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\vspace{-0.25ex}] % after
+  \titlecontents{subsection}% FIXME
+    [0em] % distance from left margin
+    {\rmfamily} % above (global formatting of entry)
+    {\hspace*{3.5em}\contentslabel{2em}} % before w/label (label = ``2.6.1'')
+    {\hspace*{3.5em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\vspace{-0.25ex}] % after
+
+\setcounter{secnumdepth}{3}
+\titleformat{\section}%
+  [hang]% shape
+  {\normalfont\Large\itshape}% format applied to label+text
+  {\normalfont\scshape\thesection}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+
+\titleformat{\subsection}%
+  [hang]% shape
+  {\normalfont\large\itshape}% format applied to label+text
+  {\normalfont\scshape\thesubsection}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+
+\titleformat{\paragraph}%
+  [runin]% shape
+  {\normalfont\itshape}% format applied to label+text
+  {\normalfont\scshape\theparagraph}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
+
+\let\Sectionmark\sectionmark
+\def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
+\let\Subsectionmark\subsectionmark
+\def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
+
+\newcommand{\Sectionname}{}
+\newcommand{\Subsectionname}{}
+\fancyhf{}
+\fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
+\ifthenelse{\boolean{@gm@nosubsec}}
+{\fancyhead[RO]{\thepage}}
+{\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}}
+
+\newcommand{\wc}[1]{\vspace{\baselineskip}\noindent{}#1 words}
 
 \endinput

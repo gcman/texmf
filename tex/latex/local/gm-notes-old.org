@@ -1,0 +1,355 @@
+* Setup
+Let LaTeX know what this is.
+#+BEGIN_SRC latex
+\ProvidesClass{gm-notes}
+\LoadClass[10pt,twoside]{report}
+#+END_SRC
+** Math
+What else would we use if not the AMS standard?
+#+BEGIN_SRC latex
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{amsxtra}
+\RequirePackage{amsfonts}
+#+END_SRC
+** Basic Packages
+#+BEGIN_SRC latex
+\RequirePackage[svgnames]{xcolor}
+\RequirePackage{hyperref}
+\hypersetup{colorlinks,
+  bookmarksdepth=subsection,
+  citecolor=DarkGreen,
+  linkcolor=Maroon,
+  urlcolor=DarkBlue}
+\RequirePackage{calc}
+\RequirePackage{tikz}
+\RequirePackage[strict]{changepage}
+\RequirePackage{ragged2e}
+#+END_SRC
+References.
+#+BEGIN_SRC latex
+\RequirePackage{cleveref}
+\crefname{section}{\S}{\S\S}
+\Crefname{section}{\S}{\S\S}
+#+END_SRC
+** Package Options
+#+BEGIN_SRC latex
+\DeclareOption{notoc}{\renewcommand{\tableofcontents}{}}
+\newif\ifthmsecnum\thmsecnumtrue
+\DeclareOption{nosec}{\thmsecnumfalse}
+\newif\ifnosubsec
+\DeclareOption{nosubsec}{\nosubsectrue}
+\ProcessOptions\relax
+#+END_SRC
+** Lengths
+The length =overhang= will be the part of the document after the text block, and
+=fullwidth= is the width of the full document.
+#+BEGIN_SRC latex
+\newlength{\@overhang}
+\newlength{\@fullwidth}
+\newcommand{\@linespread}{1.15}
+#+END_SRC
+* Page Layout
+** 1.5 Column
+The first thing we do is set up the geometry of the page with a wide margin.
+This is to accommodate margin notes, figures, and tables.
+#+BEGIN_SRC latex
+\RequirePackage[letterpaper,left=1in,top=1in,bottom=1in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip]{geometry}
+#+END_SRC
+Then we set up the lengths.
+#+BEGIN_SRC latex
+\newcommand{\CalculateLength}{%
+  \setlength{\@overhang}{\marginparwidth}
+  \addtolength{\@overhang}{\marginparsep}
+
+  \setlength{\@fullwidth}{\textwidth}
+  \addtolength{\@fullwidth}{\@overhang}}
+\AtBeginDocument{\CalculateLength}
+#+END_SRC
+Sometimes, we would like an element to span the full width of the page.
+#+BEGIN_SRC latex
+\newenvironment{fullwidth}{\begin{adjustwidth*}{}{-\@overhang}}{\end{adjustwidth*}}
+#+END_SRC
+** Title Block
+#+BEGIN_SRC latex
+\renewcommand{\@author}{Gautam Manohar}
+#+END_SRC
+The title is centered across the whole page.
+#+BEGIN_SRC latex
+\renewcommand{\maketitle}{%
+  \begin{fullwidth}
+    \centering
+    \LARGE\textls[150]{\MakeUppercase{\@title}}\par
+    \vspace{0.1\baselineskip}
+    \large\scshape\MakeLowercase{\@author}\par
+    \vspace{0.1\baselineskip}
+    \large\scshape\MakeLowercase{\@date}\par
+    \vspace{\baselineskip}
+  \end{fullwidth}
+  \thispagestyle{empty}}
+#+END_SRC
+** Margin Notes
+I want footnotes to be set in the margin.
+#+BEGIN_SRC latex
+\RequirePackage[footnote]{snotez}
+\setsidenotes{text-mark-format=\textsuperscript{\normalfont#1},
+              text-format+=\singlespacing,
+              note-mark-sep=\,}
+#+END_SRC
+We use =marginnote= rather than =marginpar=, because I've tried the latter before,
+and it was a big hassle to get automatic alignment working.
+#+BEGIN_SRC latex
+\RequirePackage{marginnote}
+\renewcommand*{\marginnotevadjust}{-0.5\baselineskip}
+\renewcommand*{\marginfont}{\linespread{1}\normalfont\footnotesize\justify}
+#+END_SRC
+** Page Header
+The best header package I know of is =fancyhdr=.
+#+BEGIN_SRC latex
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+#+END_SRC
+I don't use chapters in my notes, and I want to include info about the section
+and subsection in the header. Instead of attempting the dark wizardry necessary
+to get this behaviour from the =\leftmark= and =\rightmark= macros, I make my own
+macros for the name of the current (sub)section.
+#+BEGIN_SRC latex
+\let\Sectionmark\sectionmark
+\def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
+\let\Subsectionmark\subsectionmark
+\def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
+#+END_SRC
+I don't really have anything to put in the footer, and it looks a little weird.
+#+BEGIN_SRC latex
+\newcommand{\Sectionname}{}
+\newcommand{\Subsectionname}{}
+\fancyhf{}
+\fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
+\ifnosubsec
+\fancyhead[RO]{\thepage}
+\else
+\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}
+\fi
+#+END_SRC
+So far, our page numbers only go so far as the body text. To make the margin
+notes seem like a unified part of the page, we should extend the page headers
+into the margin.
+#+BEGIN_SRC latex
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headwidth}{\textwidth}
+\addtolength{\headwidth}{\marginparsep}
+\addtolength{\headwidth}{\marginparwidth}
+#+END_SRC
+** Titling
+Number sections outside of chapter.
+#+BEGIN_SRC latex
+\renewcommand\thesection{\arabic{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+#+END_SRC
+#+BEGIN_SRC latex
+\RequirePackage{titlesec}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\marginnote{\centering\Huge\thechapter}[-0.9em]}{0pt}{\Huge\bfseries}
+#+END_SRC
+** Table of Contents
+This code is inspired by =tufte-latex= and =classicthesis=.
+#+BEGIN_SRC latex
+\RequirePackage{titletoc}
+\renewcommand\tableofcontents{%
+    \section*{\contentsname
+        \@mkboth{%
+           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+    \@starttoc{toc}%
+    }
+\setcounter{tocdepth}{3}
+  \titlecontents{chapter}%
+    [0em] % distance from left margin
+    {\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
+    {\hspace*{0em}\contentslabel{2em}} % before w/label (label = ``2'')
+    {\hspace*{0em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\end{fullwidth}] % after
+  \titlecontents{section}
+    [0em] % distance from left margin
+    {\large\scshape} % above (global formatting of entry)
+    {\hspace*{1.5em}\contentslabel{1.5em}} % before w/label (label = ``2.6'')
+    {\hspace*{1.5em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\vspace{-0.25ex}] % after
+  \titlecontents{subsection}% FIXME
+    [0em] % distance from left margin
+    {\rmfamily} % above (global formatting of entry)
+    {\hspace*{3.5em}\contentslabel{2em}} % before w/label (label = ``2.6.1'')
+    {\hspace*{3.5em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\vspace{-0.25ex}] % after
+#+END_SRC
+* Typography
+I think Computer Modern is too light of a font, and everyone uses it. Right now,
+I'm a fan of the Palatino Linotype font, with old-style numerals. The =mathpazo=
+package provides a matching math typeface.
+#+BEGIN_SRC latex
+\RequirePackage[osf,sc]{mathpazo}
+#+END_SRC
+Microtype is pretty awesome, though I need to set up some more detailed
+configuration here. I decrease =stretch= and =shrink= parameters from the default
+of 20 because I had some issues with blurry lines, though that could have just
+been my PDF viewer.
+#+BEGIN_SRC latex
+\RequirePackage[stretch=10,shrink=10,tracking=true]{microtype}
+#+END_SRC
+Allow superscripts to protrude into the outer margin.
+#+BEGIN_SRC latex
+\SetProtrusion{encoding={*},family={*},series={*},size={6,7}}
+              {1={ ,750},2={ ,500},3={ ,500},4={ ,500},5={ ,500},
+               6={ ,500},7={ ,600},8={ ,500},9={ ,500},0={ ,500}}
+#+END_SRC
+We don't want tracking on small caps, which looks too spread out.
+#+BEGIN_SRC latex
+\SetTracking{encoding={*}, shape=sc}{0}
+#+END_SRC
+The default line spacing is a bit too tight for my taste, at least with Palatino
+Linotype font.
+#+BEGIN_SRC latex
+\RequirePackage{setspace}
+\setstretch{\@linespread}
+#+END_SRC
+#+BEGIN_SRC latex
+\setlength{\parskip}{0pt}
+#+END_SRC
+** Lists
+#+BEGIN_SRC latex
+\RequirePackage{enumitem}
+\setlist[enumerate]{itemsep=1pt,topsep=3pt,leftmargin=2em}
+#+END_SRC
+** Theorems
+We use =thmtools= to actually create the theorems and set up their counters, and
+we use =mdframed= to decorate them. I do eventually want to switch to =tcolorbox=,
+which seems to have cleaner syntax and much broader customizability and
+functionality.
+#+BEGIN_SRC latex
+\RequirePackage{thmtools}
+\RequirePackage[framemethod=tikz]{mdframed}
+\mdfsetup{skipabove=0.75em plus 0.25em minus 0.25em,skipbelow=0.1em minus 0.1em}
+#+END_SRC
+This next bit is going to be pretty ugly and repetitive, but I don't know a
+better way to do it in LaTeX.
+
+First, we define the colours.
+#+BEGIN_SRC latex
+\colorlet{ThmColor}{Blue}
+\colorlet{PropColor}{FireBrick}
+\colorlet{ExColor}{ForestGreen}
+\colorlet{DefColor}{Gainsboro}
+\colorlet{CorColor}{DimGrey}
+\colorlet{RemColor}{Moccasin} % Dandelion
+#+END_SRC
+*** Theorem-esque
+Borders on top and bottom.
+#+BEGIN_SRC latex
+\declaretheoremstyle[
+headfont=\color{MediumBlue}\normalfont\scshape,
+bodyfont=\normalfont\itshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=ThmColor!5,
+linecolor=ThmColor!50,
+linewidth=1pt,
+leftline=false,
+rightline=false}]{thm}
+
+\declaretheoremstyle[
+headfont=\color{DarkRed!75}\normalfont\scshape,
+bodyfont=\normalfont\itshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=PropColor!5,
+linecolor=PropColor!40,
+linewidth=1pt,
+leftline=false,
+rightline=false}]{prop}
+
+\declaretheoremstyle[
+headfont=\normalfont\scshape,
+bodyfont=\normalfont\itshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=CorColor!10,
+linecolor=CorColor!50,
+linewidth=1pt,
+leftline=false,
+rightline=false}]{cor}
+#+END_SRC
+*** Definition-Esque
+Bar coming out of side.
+#+BEGIN_SRC latex
+\declaretheoremstyle[
+headfont=\color{Green}\normalfont\scshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=ExColor!5,
+linecolor=ExColor!50,
+linewidth=5pt,
+topline=false,
+bottomline=false,
+rightline=false,}]{ex}
+
+\declaretheoremstyle[
+headfont=\color{DimGray}\normalfont\scshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=DefColor!20,
+linecolor=DefColor,
+linewidth=5pt,
+topline=false,
+bottomline=false,
+rightline=false,}]{def}
+
+\declaretheoremstyle[
+headfont=\color{Goldenrod}\normalfont\scshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=RemColor!25,
+linecolor=RemColor!80,
+linewidth=5pt,
+topline=false,
+bottomline=false,
+rightline=false,}]{rem}
+#+END_SRC
+*** Plain
+The default style, without any colours.
+#+BEGIN_SRC latex
+\declaretheoremstyle[
+headfont=\normalfont\scshape,
+spaceabove=10pt,
+spacebelow=10pt,
+postheadspace=0.5em
+]{plain}
+#+END_SRC
+*** Assigning Styles
+Using =thmtools=, we actually declare theorems. First we check if we want
+numbering like =Theorem 1.1= or like =Theorem 1=.
+#+BEGIN_SRC latex
+\ifthmsecnum
+\declaretheorem[style=thm,numberwithin=section,name=theorem]{theorem}
+\else
+\declaretheorem[style=thm,name=theorem]{theorem}
+\fi
+#+END_SRC
+Then we make the rest of the theorems.
+#+BEGIN_SRC latex
+\declaretheorem[style=prop,sibling=theorem,name=proposition]{proposition}
+\declaretheorem[style=prop,sibling=theorem,name=lemma]{lemma}
+\declaretheorem[style=cor,sibling=theorem,name=corollary]{corollary}
+\declaretheorem[style=cor,sibling=theorem,name=claim]{claim}
+\declaretheorem[style=rem,sibling=theorem,name=conjecture]{conjecture}
+\declaretheorem[style=rem,sibling=theorem,name=remark]{remark}
+\declaretheorem[style=rem,sibling=theorem,name=fact]{fact}
+\declaretheorem[style=def,sibling=theorem,name=definition]{definition}
+\declaretheorem[style=ex,sibling=theorem,name=example]{ex}
+\declaretheorem[style=plain,sibling=theorem]{exercise}
+\declaretheorem[style=plain]{problem}
+#+END_SRC
+* End
+#+BEGIN_SRC latex
+\endinput
+#+END_SRC
+* COMMENT Options
+#+PROPERTY: header-args :tangle gm-notes.cls
+# Local variables:
+# after-save-hook: org-babel-tangle
+# end:
