@@ -46,18 +46,25 @@
   linkcolor=Maroon,
   urlcolor=DarkBlue}
 
-\RequirePackage{fontspec}
+\RequirePackage{cleveref}
 
-\setmainfont[Ligatures=TeX,Numbers={OldStyle,Proportional}]{TeX Gyre Pagella}
+\RequirePackage{fontspec}
 
 \RequirePackage{mathpazo}
 
-% \RequirePackage[Latin,Greek]{ucharclasses}
+\setmainfont{texgyrepagella}[
+  Extension=.otf,
+  UprightFont=*-regular,
+  ItalicFont=*-italic,
+  BoldFont=*-bold,
+  BoldItalicFont=*-bolditalic,
+  Numbers={OldStyle,Proportional},
+  Ligatures=TeX]
 
-% \newfontfamily\mynormal[Ligatures=TeX,Numbers={OldStyle,Proportional}]{TeX Gyre Pagella}
-% \setDefaultTransitions{\mynormal}{}
-% \newfontfamily\mygreek{GFS Porson}
-% \setTransitionsForGreek{\mygreek}{}
+\newfontfamily\gk{GFS Porson}
+\RequirePackage{polyglossia}
+\setmainlanguage{english}
+\setotherlanguage[variant=ancient]{greek}
 
 \RequirePackage{enumitem}
 \setlist[enumerate]{itemsep=1pt,topsep=3pt,leftmargin=2em}
@@ -210,7 +217,7 @@ postheadspace=0.5em
 {\renewcommand{\maketitle}{%
     \begin{fullwidth}
       \centering
-      \LARGE\so{\MakeUppercase{\@title}}\par
+      {\LARGE\so{\MakeUppercase{\@title}}}\par
       \vspace{0.1\baselineskip}
       \large\scshape\MakeLowercase{\@author}\par
       \vspace{0.1\baselineskip}
@@ -220,11 +227,13 @@ postheadspace=0.5em
     \thispagestyle{empty}}}
 \makeatother
 
+\makeatletter
 \renewcommand\tableofcontents{%
     \section*{\contentsname
         \@mkboth{%
            \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
     \@starttoc{toc}}
+\makeatother
 \setcounter{tocdepth}{3}
   \titlecontents{chapter}%
     [0em] % distance from left margin

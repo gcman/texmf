@@ -69,36 +69,54 @@ We set up =hyperref=.
   linkcolor=Maroon,
   urlcolor=DarkBlue}
 #+END_SRC
+Then =cleveref=.
+#+BEGIN_SRC latex
+\RequirePackage{cleveref}
+#+END_SRC
 * Typography
 This is how everything font-related works in XeTeX.
 #+BEGIN_SRC latex
 \RequirePackage{fontspec}
 #+END_SRC
-TeX Gyre Pagella is our main font.
-#+BEGIN_SRC latex
-\setmainfont[Ligatures=TeX,Numbers={OldStyle,Proportional}]{TeX Gyre Pagella}
-#+END_SRC
-We use the =mathpazo= package for typesetting math. It's also a clone of Palatino.
+We use the =mathpazo= package for typesetting math. It's a clone of Palatino.
 #+BEGIN_SRC latex
 \RequirePackage{mathpazo}
 #+END_SRC
+TeX Gyre Pagella is our main font.
+#+BEGIN_SRC latex
+\setmainfont{texgyrepagella}[
+  Extension=.otf,
+  UprightFont=*-regular,
+  ItalicFont=*-italic,
+  BoldFont=*-bold,
+  BoldItalicFont=*-bolditalic,
+  Numbers={OldStyle,Proportional},
+  Ligatures=TeX]
+#+END_SRC
 ** Ancient Greek
-The traditional approaches to writing in other languages in LaTeX involve
-something like =babel= (or =polyglossia= with XeTeX). However, the problem with
-This is that the user must explicitly switch to another language for characters
-to be rendered in it. The main other language I type in is Ancient Greek.
-Because the Greek and Latin alphabets are disjoint, we can automatically switch
-when Unicode Greek letters are in the file.
+This is under construction
 #+BEGIN_SRC latex
-% \RequirePackage[Latin,Greek]{ucharclasses}
+\newfontfamily\gk{GFS Porson}
+\RequirePackage{polyglossia}
+\setmainlanguage{english}
+\setotherlanguage[variant=ancient]{greek}
 #+END_SRC
-My favourite Greek font is GFS Porson.
-#+BEGIN_SRC latex
-% \newfontfamily\mynormal[Ligatures=TeX,Numbers={OldStyle,Proportional}]{TeX Gyre Pagella}
-% \setDefaultTransitions{\mynormal}{}
-% \newfontfamily\mygreek{GFS Porson}
-% \setTransitionsForGreek{\mygreek}{}
-#+END_SRC
+# The traditional approaches to writing in other languages in LaTeX involve
+# something like =babel= (or =polyglossia= with XeTeX). However, the problem with
+# This is that the user must explicitly switch to another language for characters
+# to be rendered in it. The main other language I type in is Ancient Greek.
+# Because the Greek and Latin alphabets are disjoint, we can automatically switch
+# when Unicode Greek letters are in the file.
+# #+BEGIN_SRC latex
+# \RequirePackage[Latin,Greek]{ucharclasses}
+# #+END_SRC
+# My favourite Greek font is GFS Porson.
+# #+BEGIN_SRC latex
+# \newfontfamily\defaultfont[Ligatures=TeX,Numbers={OldStyle,Proportional}]{TeX Gyre Pagella}
+# \setDefaultTransitions{\defaultfont}{}
+# \newfontfamily\greekfont{GFS Porson}
+# \setTransitionsForGreek{\greekfont}{}
+# #+END_SRC
 ** Lists
 #+BEGIN_SRC latex
 \RequirePackage{enumitem}
@@ -292,7 +310,7 @@ I want a title centred across the whole page.
 {\renewcommand{\maketitle}{%
     \begin{fullwidth}
       \centering
-      \LARGE\so{\MakeUppercase{\@title}}\par
+      {\LARGE\so{\MakeUppercase{\@title}}}\par
       \vspace{0.1\baselineskip}
       \large\scshape\MakeLowercase{\@author}\par
       \vspace{0.1\baselineskip}
@@ -302,44 +320,16 @@ I want a title centred across the whole page.
     \thispagestyle{empty}}}
 \makeatother
 #+END_SRC
-#+BEGIN_EXPORT latex
-\ifthenelse{\boolean{@gm@titlepage}}
-{\newcommand*{\@course}{Course}
-  \newcommand*{\course}[1]{\gdef\@course{#1}}
-  \renewcommand{\maketitle}{}
-  \AtBeginDocument{%
-    \begin{titlepage}
-      \raggedleft
-      \rule{1pt}{\textheight}
-      \hspace{0.05\textwidth}
-      \parbox[b]{0.75\textwidth}{
-        {\Huge\bfseries \@title}\\[1.5\baselineskip]
-        {\large\itshape \@course}\\[9\baselineskip]
-        {\Large\scshape \@author}\\
-        \vspace{0.42\textheight}
-        {\noindent \@date}\\[\baselineskip]}
-    \end{titlepage}}}
-{\renewcommand{\maketitle}{%
-    \begin{fullwidth}
-      \centering
-      \LARGE\so{\MakeUppercase{\@title}}\par
-      \vspace{0.1\baselineskip}
-      \large\scshape\MakeLowercase{\@author}\par
-      \vspace{0.1\baselineskip}
-      \large\scshape\MakeLowercase{\@date}\par
-      \vspace{\baselineskip}
-    \end{fullwidth}
-    \thispagestyle{empty}}}
-\makeatother
-#+END_EXPORT
 ** Table of Contents
 This format is inspired by =classicthesis=.
 #+BEGIN_SRC latex
+\makeatletter
 \renewcommand\tableofcontents{%
     \section*{\contentsname
         \@mkboth{%
            \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
     \@starttoc{toc}}
+\makeatother
 \setcounter{tocdepth}{3}
   \titlecontents{chapter}%
     [0em] % distance from left margin
