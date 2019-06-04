@@ -93,6 +93,11 @@ TeX Gyre Pagella is our main font.
   Numbers={OldStyle,Proportional},
   Ligatures=TeX]
 #+END_SRC
+** Quotes
+Use =csquotes=.
+#+BEGIN_SRC latex
+\RequirePackage{csquotes}
+#+END_SRC
 ** Ancient Greek
 This is under construction
 #+BEGIN_SRC latex
@@ -281,7 +286,7 @@ Then we make the rest of the theorems.
 Naturally, if we aren't using a 1.5 column layout, then the =fullwidth=
 environment should not do anything.
 #+BEGIN_SRC latex
-\renewenvironment{fullwidth}{}{}
+\ifthenelse{\boolean{@gm@wide}}{\renewenvironment{fullwidth}{}{}}{}
 #+END_SRC
 ** Title Block
 If you're using this for personal use, change this to your name.

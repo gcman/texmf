@@ -61,6 +61,8 @@
   Numbers={OldStyle,Proportional},
   Ligatures=TeX]
 
+\RequirePackage{csquotes}
+
 \newfontfamily\gk{GFS Porson}
 \RequirePackage{polyglossia}
 \setmainlanguage{english}
@@ -193,7 +195,7 @@ postheadspace=0.5em
 \declaretheorem[style=plain,sibling=theorem]{exercise}
 \declaretheorem[style=plain]{problem}
 
-\renewenvironment{fullwidth}{}{}
+\ifthenelse{\boolean{@gm@wide}}{\renewenvironment{fullwidth}{}{}}{}
 
 \makeatletter
 \gdef\@author{Gautam Manohar}
