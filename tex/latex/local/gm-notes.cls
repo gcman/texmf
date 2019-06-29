@@ -120,7 +120,8 @@ mdframed={backgroundcolor=ThmColor!5,
 linecolor=ThmColor!50,
 linewidth=1pt,
 leftline=false,
-rightline=false}]{thm}
+rightline=false,
+innerrightmargin=2.25em,}]{thm}
 
 \declaretheoremstyle[
 headfont=\color{DarkRed!75}\normalfont\scshape,
@@ -130,7 +131,8 @@ mdframed={backgroundcolor=PropColor!5,
 linecolor=PropColor!40,
 linewidth=1pt,
 leftline=false,
-rightline=false}]{prop}
+rightline=false,
+innerrightmargin=2.25em,}]{prop}
 
 \declaretheoremstyle[
 headfont=\normalfont\scshape,
@@ -140,7 +142,8 @@ mdframed={backgroundcolor=CorColor!10,
 linecolor=CorColor!50,
 linewidth=1pt,
 leftline=false,
-rightline=false}]{cor}
+rightline=false,
+innerrightmargin=2.25em,}]{cor}
 
 \declaretheoremstyle[
 headfont=\color{Green}\normalfont\scshape,
@@ -150,7 +153,8 @@ linecolor=ExColor!50,
 linewidth=5pt,
 topline=false,
 bottomline=false,
-rightline=false,}]{ex}
+rightline=false,
+innerrightmargin=2.25em,}]{ex}
 
 \declaretheoremstyle[
 headfont=\color{DimGray}\normalfont\scshape,
@@ -160,7 +164,8 @@ linecolor=DefColor,
 linewidth=5pt,
 topline=false,
 bottomline=false,
-rightline=false,}]{def}
+rightline=false,
+innerrightmargin=2.25em,}]{def}
 
 \declaretheoremstyle[
 headfont=\color{Goldenrod}\normalfont\scshape,
@@ -170,7 +175,8 @@ linecolor=RemColor!80,
 linewidth=5pt,
 topline=false,
 bottomline=false,
-rightline=false,}]{rem}
+rightline=false,
+innerrightmargin=2.25em,}]{rem}
 
 \declaretheoremstyle[
 headfont=\normalfont\scshape,
@@ -302,5 +308,10 @@ postheadspace=0.5em
 {\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}}
 
 \newcommand{\wc}[1]{\vspace{\baselineskip}\noindent{}#1 words}
+
+\RequirePackage{import}
+\RequirePackage{pdfpages}
+
+% \pdfsuppresswarningpagegroup=1
 
 \endinput
