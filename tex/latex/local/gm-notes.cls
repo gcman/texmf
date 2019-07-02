@@ -1,4 +1,5 @@
-\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\NeedsTeXFormat{LaTeX2e}[1994/06/0
+1]
 \ProvidesClass{gm-notes}[2019/04/20]
 
 \RequirePackage{xkeyval}

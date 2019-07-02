@@ -1,6 +1,8 @@
 \ProvidesPackage{gm-math}
 \usepackage{amsmath}
 \usepackage{xifthen}
+\usepackage{ytableau}
+\ytableausetup{centertableaux}
 
 \newcommand{\dd}[2][]{
 \ifthenelse{\equal{#1}{}}
@@ -41,6 +43,7 @@
 \DeclareMathOperator{\Inf}{inf}
 \DeclareMathOperator{\Sup}{sup}
 \DeclareMathOperator{\Hom}{hom}
+\DeclareMathOperator{\GL}{GL}
 
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
