@@ -1,8 +1,10 @@
 \ProvidesPackage{gm-math}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{xifthen}
 \usepackage{ytableau}
 \ytableausetup{centertableaux}
+\usepackage{faktor}
 
 \newcommand{\dd}[2][]{
 \ifthenelse{\equal{#1}{}}
@@ -33,6 +35,8 @@
 \newcommand{\Iso}{\cong}
 \newcommand{\inp}[2]{\langle #1, #2 \rangle}
 
+\newcommand{\quot}[2]{\faktor{#1}{#2}}
+
 \DeclareMathOperator{\Deg}{deg}
 \DeclareMathOperator{\Dim}{dim}
 \DeclareMathOperator{\Image}{im}
@@ -44,6 +48,9 @@
 \DeclareMathOperator{\Sup}{sup}
 \DeclareMathOperator{\Hom}{hom}
 \DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\GCD}{gcd}
+\DeclareMathOperator{\LCM}{lcm}
 
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
