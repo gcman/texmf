@@ -182,6 +182,7 @@ First, we define the colours.
 \colorlet{DefColor}{Gainsboro}
 \colorlet{CorColor}{DimGrey}
 \colorlet{RemColor}{Moccasin} % Dandelion
+\colorlet{ConjColor}{Moccasin}
 #+END_SRC
 *** Theorem-esque
 Borders on top and bottom.
@@ -254,6 +255,17 @@ topline=false,
 bottomline=false,
 rightline=false,
 innerrightmargin=2.25em,}]{rem}
+
+\declaretheoremstyle[
+headfont=\color{Goldenrod}\normalfont\scshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=ConjColor!25,
+linecolor=ConjColor!80,
+linewidth=5pt,
+topline=false,
+bottomline=false,
+rightline=false,
+innerrightmargin=2.25em,}]{conj}
 #+END_SRC
 *** Plain
 The default style, without any colours.

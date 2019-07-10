@@ -1,5 +1,4 @@
-\NeedsTeXFormat{LaTeX2e}[1994/06/0
-1]
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesClass{gm-notes}[2019/04/20]
 
 \RequirePackage{xkeyval}
@@ -112,6 +111,7 @@
 \colorlet{DefColor}{Gainsboro}
 \colorlet{CorColor}{DimGrey}
 \colorlet{RemColor}{Moccasin} % Dandelion
+\colorlet{ConjColor}{Moccasin}
 
 \declaretheoremstyle[
 headfont=\color{MediumBlue}\normalfont\scshape,
@@ -178,6 +178,17 @@ topline=false,
 bottomline=false,
 rightline=false,
 innerrightmargin=2.25em,}]{rem}
+
+\declaretheoremstyle[
+headfont=\color{Goldenrod}\normalfont\scshape,
+postheadspace=0.5em,
+mdframed={backgroundcolor=ConjColor!25,
+linecolor=ConjColor!80,
+linewidth=5pt,
+topline=false,
+bottomline=false,
+rightline=false,
+innerrightmargin=2.25em,}]{conj}
 
 \declaretheoremstyle[
 headfont=\normalfont\scshape,
