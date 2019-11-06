@@ -6,6 +6,8 @@
 \ytableausetup{centertableaux}
 \usepackage{faktor}
 \usepackage{tikz-cd}
+\usepackage{siunitx}
+\usepackage{cancel}
 
 \newcommand{\dd}[2][]{
 \ifthenelse{\equal{#1}{}}
@@ -17,8 +19,16 @@
     {\def\temp {\partial}}
     {\def\temp {\partial^{#1}}}
 \temp #2}
-\newcommand{\dv}[3][]{\frac{\dd[#1]{#2}}{\dd[#1]{#3}}}
-\newcommand{\pdv}[3][]{\frac{\pd[#1]{#2}}{\pd[#1]{#3}}}
+\newcommand{\dv}[3][]{\frac{\dd[#1]{#2}}{\dd{#3}\ifthenelse{\equal{#1}{}}
+    {\def\temp {}}
+    {\def\temp {^{#1}}}\temp}}
+\newcommand{\pdv}[3][]{\frac{\pd[#1]{#2}}{\pd{#3}\ifthenelse{\equal{#1}{}}
+    {\def\temp {}}
+    {\def\temp {^{#1}}}\temp}}
+
+\newcommand{\ihat}{\hat{\textbf{i}}}
+\newcommand{\jhat}{\hat{\textbf{j}}}
+\newcommand{\khat}{\hat{\textbf{k}}}
 
 \newcommand{\Grad}{\nabla}
 \newcommand{\Div}{\nabla\cdot}
@@ -29,6 +39,8 @@
 \newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 \newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\group}[2]{\langle #1 \mid #2 \rangle}
+\newcommand{\normsg}{\trianglelefteq}
 \renewcommand{\vec}{\mathbf}
 
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
@@ -45,15 +57,21 @@
 \DeclareMathOperator{\Mat}{Mat}
 \DeclareMathOperator{\Span}{span}
 \DeclareMathOperator{\Det}{det}
+\DeclareMathOperator{\Adj}{adj}
 \DeclareMathOperator{\Inf}{inf}
 \DeclareMathOperator{\Sup}{sup}
 \DeclareMathOperator{\Hom}{hom}
 \DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\SL}{SL}
 \DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\GCD}{gcd}
 \DeclareMathOperator{\LCM}{lcm}
 \DeclareMathOperator{\Obj}{obj}
 \DeclareMathOperator{\Frob}{Frob}
+\DeclareMathOperator{\rref}{rref}
+
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
 
 \DeclareMathOperator{\gal}{Gal}
 \newcommand{\Gal}[2]{\gal(#1/#2)}
@@ -83,3 +101,11 @@
 \newcommand{\legendre}[3][]{\genlegendre{}{#1}{#2}{#3}}
 \newcommand{\dlegendre}[3][]{\genlegendre{0}{#1}{#2}{#3}}
 \newcommand{\tlegendre}[3][]{\genlegendre{1}{#1}{#2}{#3}}
+
+% allow augmented matrix
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother

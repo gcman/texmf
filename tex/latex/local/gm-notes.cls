@@ -316,7 +316,8 @@ postheadspace=0.5em
 \fancyhf{}
 \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
 \ifthenelse{\boolean{@gm@nosubsec}}
-{\fancyhead[RO]{\thepage}}
+{\fancyhead[LE]{\small\thepage\quad{\scshape gautam manohar}}
+  \fancyhead[RO]{{\scshape gautam manohar}\quad\thepage}}
 {\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}}
 
 \newcommand{\wc}[1]{\vspace{\baselineskip}\noindent{}#1 words}
