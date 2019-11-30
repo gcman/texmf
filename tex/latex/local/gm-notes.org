@@ -44,7 +44,7 @@ lemmas. But there should be an option to disable this, particularly for shorter 
 \ifthenelse{\boolean{@gm@wide}}{
   \PassOptionsToPackage{letterpaper,margin=1in}{geometry}
 }{
-  \PassOptionsToPackage{letterpaper,left=1in,top=1in,bottom=0.9in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip}{geometry}
+ \PassOptionsToPackage{letterpaper,left=1in,top=1in,bottom=0.9in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip}{geometry}
 }
 #+END_SRC
 #+BEGIN_SRC latex
@@ -126,6 +126,7 @@ This is under construction
 #+BEGIN_SRC latex
 \RequirePackage{enumitem}
 \setlist[enumerate]{itemsep=1pt,topsep=3pt,leftmargin=2em}
+\renewcommand{\theenumi}{\alph{enumi}} \renewcommand{\labelenumi}{\theenumi)} \renewcommand{\theenumii}{\roman{enumii}}
 #+END_SRC
 ** Citations
 [[https://tex.stackexchange.com/questions/238661/is-it-possible-to-fine-tune-the-citation-positions-in-tufte-biblatex-combination][This answer on StackExchange]] explains how we can move the position of a sidenote
@@ -319,6 +320,7 @@ I want a title centred across the whole page.
   \newcommand*{\course}[1]{\gdef\@course{#1}}
   \renewcommand{\maketitle}{}
   \AtBeginDocument{%
+    \newgeometry{letterpaper,left=1in,top=1in,bottom=0.9in}
     \begin{titlepage}
       \raggedleft
       \rule{1pt}{\textheight}
@@ -329,7 +331,9 @@ I want a title centred across the whole page.
         {\Large\scshape \@author}\\
         \vspace{0.42\textheight}
         {\noindent \@date}\\[\baselineskip]}
-    \end{titlepage}}}
+    \end{titlepage}
+  \ifthenelse{\boolean{@gm@wide}}{\baselineskip}{
+ \newgeometry{letterpaper,left=1in,top=1in,bottom=0.9in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip}}}}
 {\renewcommand{\maketitle}{%
     \begin{fullwidth}
       \centering

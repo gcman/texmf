@@ -28,7 +28,7 @@
 \ifthenelse{\boolean{@gm@wide}}{
   \PassOptionsToPackage{letterpaper,margin=1in}{geometry}
 }{
-  \PassOptionsToPackage{letterpaper,left=1in,top=1in,bottom=0.9in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip}{geometry}
+ \PassOptionsToPackage{letterpaper,left=1in,top=1in,bottom=0.9in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip}{geometry}
 }
 
 \PassOptionsToClass{symmetric,nobib}{tufte-handout}
@@ -70,6 +70,7 @@
 
 \RequirePackage{enumitem}
 \setlist[enumerate]{itemsep=1pt,topsep=3pt,leftmargin=2em}
+\renewcommand{\theenumi}{\alph{enumi}} \renewcommand{\labelenumi}{\theenumi)} \renewcommand{\theenumii}{\roman{enumii}}
 
 \ifthenelse{\boolean{@gm@ref}}
 {\RequirePackage[style=chicago-authordate,autocite=footnote,backend=biber]{biblatex}
@@ -223,6 +224,7 @@ postheadspace=0.5em
   \newcommand*{\course}[1]{\gdef\@course{#1}}
   \renewcommand{\maketitle}{}
   \AtBeginDocument{%
+    \newgeometry{letterpaper,left=1in,top=1in,bottom=0.9in}
     \begin{titlepage}
       \raggedleft
       \rule{1pt}{\textheight}
@@ -233,7 +235,9 @@ postheadspace=0.5em
         {\Large\scshape \@author}\\
         \vspace{0.42\textheight}
         {\noindent \@date}\\[\baselineskip]}
-    \end{titlepage}}}
+    \end{titlepage}
+  \ifthenelse{\boolean{@gm@wide}}{\baselineskip}{
+ \newgeometry{letterpaper,left=1in,top=1in,bottom=0.9in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip}}}}
 {\renewcommand{\maketitle}{%
     \begin{fullwidth}
       \centering
@@ -316,8 +320,7 @@ postheadspace=0.5em
 \fancyhf{}
 \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
 \ifthenelse{\boolean{@gm@nosubsec}}
-{\fancyhead[LE]{\small\thepage\quad{\scshape gautam manohar}}
-  \fancyhead[RO]{{\scshape gautam manohar}\quad\thepage}}
+{\fancyhead[RO]{\thepage}}
 {\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}}
 
 \newcommand{\wc}[1]{\vspace{\baselineskip}\noindent{}#1 words}
