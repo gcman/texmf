@@ -41,7 +41,8 @@
 \newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand{\group}[2]{\langle #1 \mid #2 \rangle}
 \newcommand{\normsg}{\trianglelefteq}
-\renewcommand{\vec}{\mathbf}
+\usepackage{bm}
+\renewcommand{\vec}[1]{\if#1\relax\bm{#1}\else\mathbf{#1}\fi}
 
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\conj}[1]{\overline{#1}}
