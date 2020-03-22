@@ -80,7 +80,7 @@ This is how everything font-related works in XeTeX.
 #+END_SRC
 It's a clone of Palatino.
 #+BEGIN_SRC latex
-\RequirePackage{newpxmath}
+\RequirePackage{mathpazo}
 #+END_SRC
 TeX Gyre Pagella is our main font.
 #+BEGIN_SRC latex

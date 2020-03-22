@@ -50,7 +50,7 @@
 
 \RequirePackage{fontspec}
 
-\RequirePackage{newpxmath}
+\RequirePackage{mathpazo}
 
 \setmainfont{texgyrepagella}[
   Extension=.otf,
