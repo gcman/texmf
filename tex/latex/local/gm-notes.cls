@@ -60,6 +60,7 @@
   BoldItalicFont=*-bolditalic,
   Numbers={OldStyle,Proportional},
   Ligatures=TeX]
+\linespread{1.05}
 
 \RequirePackage{csquotes}
 
@@ -241,7 +242,7 @@ postheadspace=0.5em
 {\renewcommand{\maketitle}{%
     \begin{fullwidth}
       \centering
-      {\LARGE\so{\MakeUppercase{\@title}}}\par
+      {\LARGE\MakeUppercase{\so{\@title}}}\par
       \vspace{0.1\baselineskip}
       \large\scshape\MakeLowercase{\@author}\par
       \vspace{0.1\baselineskip}
@@ -315,13 +316,15 @@ postheadspace=0.5em
 \let\Subsectionmark\subsectionmark
 \def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
 
+\makeatletter
 \newcommand{\Sectionname}{}
 \newcommand{\Subsectionname}{}
 \fancyhf{}
 \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
 \ifthenelse{\boolean{@gm@nosubsec}}
-{\fancyhead[RO]{\thepage}}
+{\fancyhead[RO]{\scshape\MakeLowercase{\@author}\quad\thepage}}
 {\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}}
+\makeatother
 
 \newcommand{\wc}[1]{\vspace{\baselineskip}\noindent{}#1 words}
 

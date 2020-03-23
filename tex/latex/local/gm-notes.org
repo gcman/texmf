@@ -92,6 +92,7 @@ TeX Gyre Pagella is our main font.
   BoldItalicFont=*-bolditalic,
   Numbers={OldStyle,Proportional},
   Ligatures=TeX]
+\linespread{1.05}
 #+END_SRC
 ** Quotes
 Use =csquotes=.
@@ -337,7 +338,7 @@ I want a title centred across the whole page.
 {\renewcommand{\maketitle}{%
     \begin{fullwidth}
       \centering
-      {\LARGE\so{\MakeUppercase{\@title}}}\par
+      {\LARGE\MakeUppercase{\so{\@title}}}\par
       \vspace{0.1\baselineskip}
       \large\scshape\MakeLowercase{\@author}\par
       \vspace{0.1\baselineskip}
@@ -424,13 +425,15 @@ macros for the name of the current (sub)section.
 #+END_SRC
 I don't really have anything to put in the footer, and it looks a little weird.
 #+BEGIN_SRC latex
+\makeatletter
 \newcommand{\Sectionname}{}
 \newcommand{\Subsectionname}{}
 \fancyhf{}
 \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
 \ifthenelse{\boolean{@gm@nosubsec}}
-{\fancyhead[RO]{\thepage}}
+{\fancyhead[RO]{\scshape\MakeLowercase{\@author}\quad\thepage}}
 {\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}}
+\makeatother
 #+END_SRC
 * Extra Features
 Word count macro.
