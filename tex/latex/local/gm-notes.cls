@@ -25,7 +25,7 @@
 \DeclareOptionX[gm]{pset}{
   \setboolean{@gm@pset}{true}
   \setboolean{@gm@nosubsec}{true}
-  \setboolean{@gm@thmsecnum}{true}
+  \setboolean{@gm@thmsecnum}{false}
   \AtBeginDocument{\renewcommand{\tableofcontents}{}}
 }
 
