@@ -34,6 +34,16 @@ lemmas. But there should be an option to disable this, particularly for shorter 
 \newboolean{@gm@ref}
 \DeclareOptionX[gm]{ref}{\setboolean{@gm@ref}{true}}
 #+END_SRC
+Used for formatting section headers.
+#+BEGIN_SRC latex
+\newboolean{@gm@pset}
+\DeclareOptionX[gm]{pset}{
+  \setboolean{@gm@pset}{true}
+  \setboolean{@gm@nosubsec}{true}
+  \setboolean{@gm@thmsecnum}{true}
+  \AtBeginDocument{\renewcommand{\tableofcontents}{}}
+}
+#+END_SRC
 #+BEGIN_SRC latex
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{tufte-handout}}
 #+END_SRC
@@ -383,34 +393,45 @@ This format is inspired by =classicthesis=.
 #+END_SRC
 ** Titling
 #+BEGIN_SRC latex
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+
 \setcounter{secnumdepth}{3}
-\titleformat{\section}%
+\ifthenelse{\boolean{@gm@pset}}{
+  \titleformat{\section}%
+  [runin]% shape
+  {\normalfont\scshape}% format applied to label+text
+  {}% label
+  {0em}% horizontal separation between label and title body
+  {}% before the title body
+  [.\hspace*{-0.5em}]% after the title body
+  \titlespacing*{\section}{0pt}{1.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+}{
+  \titleformat{\section}%
   [hang]% shape
   {\normalfont\Large\itshape}% format applied to label+text
   {\normalfont\scshape\thesection}% label
   {1em}% horizontal separation between label and title body
   {}% before the title body
   []% after the title body
+  \titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+}
 
 \titleformat{\subsection}%
-  [hang]% shape
-  {\normalfont\large\itshape}% format applied to label+text
-  {\normalfont\scshape\thesubsection}% label
-  {1em}% horizontal separation between label and title body
-  {}% before the title body
-  []% after the title body
+[hang]% shape
+{\normalfont\large\itshape}% format applied to label+text
+{\normalfont\scshape\thesubsection}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
 
 \titleformat{\paragraph}%
-  [runin]% shape
-  {\normalfont\itshape}% format applied to label+text
-  {\normalfont\scshape\theparagraph}% label
-  {1em}% horizontal separation between label and title body
-  {}% before the title body
-  []% after the title body
-
-\titlespacing*{\chapter}{0pt}{50pt}{40pt}
-\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
-\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
+[runin]% shape
+{\normalfont\itshape}% format applied to label+text
+{\normalfont\scshape\theparagraph}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
 #+END_SRC
 ** Page Header
 I don't use chapters in my notes, and I want to include info about the section

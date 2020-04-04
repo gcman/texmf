@@ -21,6 +21,14 @@
 \newboolean{@gm@ref}
 \DeclareOptionX[gm]{ref}{\setboolean{@gm@ref}{true}}
 
+\newboolean{@gm@pset}
+\DeclareOptionX[gm]{pset}{
+  \setboolean{@gm@pset}{true}
+  \setboolean{@gm@nosubsec}{true}
+  \setboolean{@gm@thmsecnum}{true}
+  \AtBeginDocument{\renewcommand{\tableofcontents}{}}
+}
+
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{tufte-handout}}
 
 \ProcessOptionsX*[gm]\relax
@@ -282,34 +290,45 @@ postheadspace=0.5em
     {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
     [\vspace{-0.25ex}] % after
 
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+
 \setcounter{secnumdepth}{3}
-\titleformat{\section}%
+\ifthenelse{\boolean{@gm@pset}}{
+  \titleformat{\section}%
+  [runin]% shape
+  {\normalfont\scshape}% format applied to label+text
+  {}% label
+  {0em}% horizontal separation between label and title body
+  {}% before the title body
+  [.\hspace*{-0.5em}]% after the title body
+  \titlespacing*{\section}{0pt}{1.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+}{
+  \titleformat{\section}%
   [hang]% shape
   {\normalfont\Large\itshape}% format applied to label+text
   {\normalfont\scshape\thesection}% label
   {1em}% horizontal separation between label and title body
   {}% before the title body
   []% after the title body
+  \titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+}
 
 \titleformat{\subsection}%
-  [hang]% shape
-  {\normalfont\large\itshape}% format applied to label+text
-  {\normalfont\scshape\thesubsection}% label
-  {1em}% horizontal separation between label and title body
-  {}% before the title body
-  []% after the title body
+[hang]% shape
+{\normalfont\large\itshape}% format applied to label+text
+{\normalfont\scshape\thesubsection}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
 
 \titleformat{\paragraph}%
-  [runin]% shape
-  {\normalfont\itshape}% format applied to label+text
-  {\normalfont\scshape\theparagraph}% label
-  {1em}% horizontal separation between label and title body
-  {}% before the title body
-  []% after the title body
-
-\titlespacing*{\chapter}{0pt}{50pt}{40pt}
-\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
-\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
+[runin]% shape
+{\normalfont\itshape}% format applied to label+text
+{\normalfont\scshape\theparagraph}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
 
 \let\Sectionmark\sectionmark
 \def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
