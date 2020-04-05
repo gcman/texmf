@@ -450,10 +450,13 @@ I don't really have anything to put in the footer, and it looks a little weird.
 \newcommand{\Sectionname}{}
 \newcommand{\Subsectionname}{}
 \fancyhf{}
-\fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
-\ifthenelse{\boolean{@gm@nosubsec}}
-{\fancyhead[RO]{\scshape\MakeLowercase{\@author}\quad\thepage}}
-{\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}}
+\ifthenelse{\boolean{@gm@nosubsec}}{
+  \fancyhead[LE]{\small\thepage}
+  \fancyhead[RO]{\scshape\MakeLowercase{\@author}\quad\thepage}
+}{
+  \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
+  \fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}
+}
 \makeatother
 #+END_SRC
 * Extra Features

@@ -339,10 +339,13 @@ postheadspace=0.5em
 \newcommand{\Sectionname}{}
 \newcommand{\Subsectionname}{}
 \fancyhf{}
-\fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
-\ifthenelse{\boolean{@gm@nosubsec}}
-{\fancyhead[RO]{\scshape\MakeLowercase{\@author}\quad\thepage}}
-{\fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}}
+\ifthenelse{\boolean{@gm@nosubsec}}{
+  \fancyhead[LE]{\small\thepage}
+  \fancyhead[RO]{\scshape\MakeLowercase{\@author}\quad\thepage}
+}{
+  \fancyhead[LE]{\small\thepage\quad{\itshape\Sectionname}}
+  \fancyhead[RO]{\small{\itshape\thesubsection\,\,\Subsectionname}\quad\thepage}
+}
 \makeatother
 
 \newcommand{\wc}[1]{\vspace{\baselineskip}\noindent{}#1 words}
