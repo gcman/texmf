@@ -301,7 +301,7 @@ postheadspace=0.5em
   {0em}% horizontal separation between label and title body
   {}% before the title body
   [.\hspace*{-0.5em}]% after the title body
-  \titlespacing*{\section}{0pt}{1.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+  \titlespacing*{\section}{0pt}{1.5ex}{2.3ex}
 }{
   \titleformat{\section}%
   [hang]% shape
