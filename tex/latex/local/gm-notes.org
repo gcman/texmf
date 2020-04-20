@@ -398,13 +398,22 @@ This format is inspired by =classicthesis=.
 \setcounter{secnumdepth}{3}
 \ifthenelse{\boolean{@gm@pset}}{
   \titleformat{\section}%
+  [hang]% shape
+  {\normalfont\Large\itshape}% format applied to label+text
+  {}% label
+  {0em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+  \titlespacing*{\section}{0pt}{1ex plus 0.5ex minus .2ex}{1ex plus .2ex}
+
+  \titleformat{\subsection}%
   [runin]% shape
   {\normalfont\scshape}% format applied to label+text
   {}% label
   {0em}% horizontal separation between label and title body
   {}% before the title body
   [.\hspace*{-0.5em}]% after the title body
-  \titlespacing*{\section}{0pt}{1.5ex}{2.3ex}
+  \titlespacing*{\section}{0pt}{2ex}{2.3ex}
 }{
   \titleformat{\section}%
   [hang]% shape
@@ -414,16 +423,16 @@ This format is inspired by =classicthesis=.
   {}% before the title body
   []% after the title body
   \titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
-}
 
-\titleformat{\subsection}%
-[hang]% shape
-{\normalfont\large\itshape}% format applied to label+text
-{\normalfont\scshape\thesubsection}% label
-{1em}% horizontal separation between label and title body
-{}% before the title body
-[]% after the title body
-\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
+  \titleformat{\subsection}%
+  [hang]% shape
+  {\normalfont\large\itshape}% format applied to label+text
+  {\normalfont\scshape\thesubsection}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+  \titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
+}
 
 \titleformat{\paragraph}%
 [runin]% shape
