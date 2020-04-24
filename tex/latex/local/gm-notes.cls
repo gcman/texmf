@@ -1,3 +1,5 @@
+\raggedbottom
+
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesClass{gm-notes}[2019/04/20]
 
@@ -301,7 +303,7 @@ postheadspace=0.5em
   {0em}% horizontal separation between label and title body
   {}% before the title body
   []% after the title body
-  \titlespacing*{\section}{0pt}{1ex plus 0.5ex minus .2ex}{1ex plus .2ex}
+  \titlespacing*{\section}{0pt}{3.5ex plus 1ex minus 0.1ex}{1.5ex plus 0.2ex minus 0.1ex}
 
   \titleformat{\subsection}%
   [runin]% shape
@@ -310,7 +312,7 @@ postheadspace=0.5em
   {0em}% horizontal separation between label and title body
   {}% before the title body
   [.\hspace*{-0.5em}]% after the title body
-  \titlespacing*{\section}{0pt}{2ex}{2.3ex}
+  \titlespacing*{\subsection}{0pt}{1ex}{2.3ex}
 }{
   \titleformat{\section}%
   [hang]% shape
