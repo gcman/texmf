@@ -245,7 +245,7 @@ postheadspace=0.5em
         {\large\itshape \@course}\\[9\baselineskip]
         {\Large\scshape \@author}\\
         \vspace{0.42\textheight}
-        {\noindent \@date}\\[\baselineskip]}
+        {\noindent \@date}\\[1\baselineskip]}
     \end{titlepage}
   \ifthenelse{\boolean{@gm@wide}}{\baselineskip}{
  \newgeometry{letterpaper,left=1in,top=1in,bottom=0.9in ,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,headheight=\baselineskip}}}}
@@ -257,8 +257,8 @@ postheadspace=0.5em
       \large\scshape\MakeLowercase{\@author}\par
       \vspace{0.1\baselineskip}
       \large\scshape\MakeLowercase{\@date}\par
-      \vspace{\baselineskip}
     \end{fullwidth}
+    \vspace{\baselineskip}
     \thispagestyle{empty}}}
 \makeatother
 

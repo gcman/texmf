@@ -46,6 +46,7 @@
 \newcommand{\conj}[1]{\overline{#1}}
 \newcommand{\Iso}{\cong}
 \newcommand{\inp}[2]{\langle #1, #2 \rangle}
+\newcommand{\intprod}{\lrcorner\,}
 
 \newcommand{\quot}[2]{\faktor{#1}{#2}}
 
@@ -123,4 +124,16 @@
   \hskip -\arraycolsep
   \let\@ifnextchar\new@ifnextchar
   \array{#1}}
+\makeatother
+
+\makeatletter
+\newcommand*\owedge{\mathpalette\@owedge\relax}
+\newcommand*\@owedge[1]{%
+  \mathbin{%
+    \ooalign{%
+      $#1\m@th\bigcirc$\cr
+      \hidewidth$#1\m@th\wedge$\hidewidth\cr
+    }%
+  }%
+}
 \makeatother
