@@ -7,20 +7,26 @@
 \usepackage{siunitx}
 \usepackage{cancel}
 
-\newcommand{\dd}[2][]{
+\newcommand{\dletter}{\mathrm{d}}
+\newcommand{\dd}{\mathop{}\!\dletter}
+\newcommand{\D}{\mathop{}\!\dletter}
+\newcommand{\pd}{\partial}
+
+\newcommand{\mdd}[2][]{
 \ifthenelse{\equal{#1}{}}
-    {\def\temp {\mathrm{d}}}
-    {\def\temp {\mathrm{d}^{#1}}}
+    {\def\temp {\dletter}}
+    {\def\temp {\dletter^{#1}}}
 \mathop{}\!\temp #2}
-\newcommand{\pd}[2][]{
+\newcommand{\mpd}[2][]{
 \ifthenelse{\equal{#1}{}}
     {\def\temp {\partial}}
     {\def\temp {\partial^{#1}}}
 \temp #2}
-\newcommand{\dv}[3][]{\frac{\dd[#1]{#2}}{\dd{#3}\ifthenelse{\equal{#1}{}}
+
+\newcommand{\dv}[3][]{\frac{\mdd[#1]{#2}}{\mdd{#3}\ifthenelse{\equal{#1}{}}
     {\def\temp {}}
     {\def\temp {^{#1}}}\temp}}
-\newcommand{\pdv}[3][]{\frac{\pd[#1]{#2}}{\pd{#3}\ifthenelse{\equal{#1}{}}
+\newcommand{\pdv}[3][]{\frac{\mpd[#1]{#2}}{\mpd{#3}\ifthenelse{\equal{#1}{}}
     {\def\temp {}}
     {\def\temp {^{#1}}}\temp}}
 
@@ -63,6 +69,8 @@
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\GL}{GL}
 \DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\Or}{O}
+\DeclareMathOperator{\SO}{SO}
 \DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\GCD}{gcd}
 \DeclareMathOperator{\LCM}{lcm}
@@ -86,6 +94,14 @@
 \DeclareMathOperator{\Res}{Res}
 \DeclareMathOperator{\Sym}{sym}
 \DeclareMathOperator{\Asym}{asym}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Supp}{supp}
+\DeclareMathOperator{\Sn}{sn}
+\DeclareMathOperator{\Cn}{cn}
+\DeclareMathOperator{\Dn}{dn}
+\DeclareMathOperator{\Cof}{cof}
+\DeclareMathOperator{\Diam}{diam}
 
 \let\oldemptyset\emptyset
 \let\emptyset\varnothing
