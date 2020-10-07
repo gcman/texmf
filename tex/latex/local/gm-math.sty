@@ -45,6 +45,7 @@
 \newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand{\group}[2]{\langle #1 \mid #2 \rangle}
 \newcommand{\normsg}{\trianglelefteq}
+\newcommand{\ideal}{\triangleleft}
 \usepackage{bm}
 \renewcommand{\vec}[1]{\if#1\relax\bm{#1}\else\mathbf{#1}\fi}
 
@@ -54,7 +55,8 @@
 \newcommand{\inp}[2]{\langle #1, #2 \rangle}
 \newcommand{\intprod}{\lrcorner\,}
 
-\newcommand{\quot}[2]{\faktor{#1}{#2}}
+% \newcommand{\quot}[2]{\faktor{#1}{#2}}
+\newcommand{\quot}[2]{#1/#2}
 
 \DeclareMathOperator{\Deg}{deg}
 \DeclareMathOperator{\Dim}{dim}
@@ -102,6 +104,12 @@
 \DeclareMathOperator{\Dn}{dn}
 \DeclareMathOperator{\Cof}{cof}
 \DeclareMathOperator{\Diam}{diam}
+\DeclareMathOperator{\Arg}{arg}
+\DeclareMathOperator{\Id}{id}
+\DeclareMathOperator{\Ob}{ob}
+\DeclareMathOperator{\Mor}{mor}
+\DeclareMathOperator{\Dom}{dom}
+\DeclareMathOperator{\Cod}{cod}
 
 \let\oldemptyset\emptyset
 \let\emptyset\varnothing

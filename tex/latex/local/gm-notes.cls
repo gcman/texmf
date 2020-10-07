@@ -213,7 +213,7 @@ postheadspace=0.5em
 {\declaretheorem[style=thm,numberwithin=section,name=theorem]{theorem}}
 {\declaretheorem[style=thm,name=theorem]{theorem}}
 
-\declaretheorem[style=prop,sibling=theorem,name=proposition]{proposition}
+\declaretheorem[style=thm,sibling=theorem,name=proposition]{proposition}
 \declaretheorem[style=prop,sibling=theorem,name=lemma]{lemma}
 \declaretheorem[style=cor,sibling=theorem,name=corollary]{corollary}
 \declaretheorem[style=cor,sibling=theorem,name=claim]{claim}
